@@ -7,14 +7,20 @@ import { ThemeContext, AuthContext } from "../../context/context";
 
 const theme = {
   light: {
+    placeholderColor:"#65676b",
+    headerHoverColor:"#f0f2f5",
     background: "white",
     color: "#1c1e21",
     searchBackground: "#f0f2f5",
+    logoImgBackground:"#e4e6eb",
   },
   dark: {
-    background: "yellow",
-    color: "#1c1e21",
+    placeholderColor:"#b0b3b8",
+    headerHoverColor:"#3a3b3c",
+    background: "#242526",
+    color: "#e4e6eb",
     searchBackground: "#3a3b3c",
+    logoImgBackground:"#3a3b3c",
   },
 };
 
@@ -29,7 +35,8 @@ export default function App() {
 
   console.log(pathname);
 
-  function handleChangeMode() {
+  function handleChangeMode(e) {
+    e.stopPropagation();
     if (colorMode === "light") {
       setColorMode("dark");
     } else {
@@ -42,17 +49,21 @@ export default function App() {
     setSearchLogo(false);
   }
 
+
   function returnClick() {
     setSearchLogo(true);
+    setSetUpChange(false);
   }
 
   function handleChangeMenu() {
     setMenuChange(!menuChange);
   }
 
-  function handleChangeSetUp() {
+  function handleChangeSetUp(e) {
+    e.stopPropagation();
     setSetUpChange(!setUpChange);
   }
+
 
   return (
     <>
