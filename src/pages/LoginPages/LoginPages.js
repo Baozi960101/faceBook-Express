@@ -225,6 +225,7 @@ const FooterLink = styled.a`
     text-decoration: underline;
   }
 `;
+
 const Curve = styled.div`
   border-bottom: 1px solid #dddfe2;
   height: 10px;

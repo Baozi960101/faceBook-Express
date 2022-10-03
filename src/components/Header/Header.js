@@ -49,10 +49,10 @@ const Box = styled.div`
   background-color: ${({ theme }) => theme.background};
   position: fixed;
   top: 0;
-  margin-bottom: 56px;
   box-shadow: 0 1px 4px rgb(0 0 0 / 10%), 0 2px 16px rgb(0 0 0 / 10%);
   padding: 0 15px;
   box-sizing: border-box;
+  z-index:1;
 `;
 
 const SearchArea = styled.div`
@@ -275,7 +275,7 @@ const PersonalInformation = ({ onclick, colorMode }) => {
           src={colorMode === "light" ? bell : bellDark}
         />
       </PersonalInformationList>
-      <PersonalInformationList onClick={onclick}>ME</PersonalInformationList>
+      <PersonalInformationList onClick={onclick}>User</PersonalInformationList>
     </PersonalInformationArea>
   );
 };
@@ -286,7 +286,7 @@ const SetUpMain = styled.div`
   justify-content: flex-end;
   box-shadow: 0 10px 8px 10px rgb(0 0 0 / 10%), 0 6px 5px rgb(0 0 0 / 10%);
   border-radius: 10px;
-  background-color: ${({ theme }) => theme.background};
+  background-color: ${({ theme }) => theme.setUpMainBackGroundColor};
   position: absolute;
   right: 20px;
   top: 50px;
@@ -439,7 +439,7 @@ const SetUpList = ({ img, text, onClick, arrow }) => {
         </SetUpLogo>
         {text}
       </SetUpCaption>
-      <SetUpArrow src={arrow} />
+      {text !== "登出" && <SetUpArrow src={arrow} />}
     </SetUpContain>
   );
 };
@@ -486,8 +486,14 @@ export default function Header() {
   const { handleChangeMenu, user, setUser, setUpChange, handleChangeSetUp } =
     useContext(AuthContext);
 
-  const { handleChangeMode, colorMode, searchLogo, searchClick, returnClick } =
-    useContext(ThemeContext);
+  const {
+    handleChangeModeLight,
+    handleChangeModeDark,
+    colorMode,
+    searchLogo,
+    searchClick,
+    returnClick,
+  } = useContext(ThemeContext);
 
   const { pathname } = useLocation();
 
@@ -584,9 +590,9 @@ export default function Header() {
             <SetUpMyself>
               <SetUpMyselfName>
                 <PersonalInformationList style={{ marginRight: "10px" }}>
-                  ME
+                User
                 </PersonalInformationList>
-                ME
+                User
               </SetUpMyselfName>
             </SetUpMyself>
             <SetUpList
@@ -604,7 +610,6 @@ export default function Header() {
             <SetUpList
               img={colorMode === "light" ? logout : logoutDark}
               text="登出"
-              arrow={colorMode === "light" ? arrowRight : arrowRightDark}
             />
             <SetUpText>
               隱私政策 · 服務條款 · 廣告 · Ad Choices · Cookie · · Meta © 2022
@@ -632,7 +637,7 @@ export default function Header() {
               img={colorMode === "light" ? moon : moonDark}
               text="深色模式"
             />
-            <SetUpContain onClick={handleChangeMode}>
+            <SetUpContain onClick={handleChangeModeDark}>
               <SetUpCaption>
                 <ThemeMode>
                   <div>開啟</div>
@@ -644,7 +649,7 @@ export default function Header() {
                 </ThemeMode>
               </SetUpCaption>
             </SetUpContain>
-            <SetUpContain onClick={handleChangeMode}>
+            <SetUpContain onClick={handleChangeModeLight}>
               <SetUpCaption>
                 <ThemeMode>
                   <div>關閉</div>
