@@ -89,10 +89,11 @@ const FunctionBarListArea = styled.div`
 
 export const Curve = styled.div`
   width: 88%;
-  border-bottom: 2px solid #ced0d4;
+  border-bottom: 2px solid;
   margin: 8px 0px;
   box-sizing: border-box;
-  
+  border-color:${({ theme }) => theme.borderBackGround};
+
 `;
 
 export const BarList = ({ text, src, onClick }) => {

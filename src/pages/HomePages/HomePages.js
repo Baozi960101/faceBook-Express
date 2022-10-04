@@ -1,11 +1,20 @@
 import styled from "styled-components";
-import { useContext } from "react";
+import { useNavigate } from "react-router-dom";
+import { useContext, useState } from "react";
 import {
   MEDIA_QUERY_Header_SMALL,
   MEDIA_QUERY_Header_MB,
   MEDIA_QUERY_SideBar,
 } from "../../constants/style";
+import edit from "../../image/edit.svg";
+import editDark from "../../image/editDark.svg";
 import photo from "../../image/photo.svg";
+import niceImg from "../../image/nice.svg";
+import good from "../../image/good.svg";
+import noGood from "../../image/noGood.svg";
+import noGoodDark from "../../image/noGoodDark.svg";
+import cross from "../../image/cross.svg";
+import crossDark from "../../image/crossDark.svg";
 import work01 from "../../image/work01.png";
 import work02 from "../../image/work02.png";
 import work03 from "../../image/work03.png";
@@ -16,11 +25,9 @@ const Box = styled.div`
   background-color: ${({ theme }) => theme.bodyBackGroundColor};
   color: ${({ theme }) => theme.color};
   max-width: 680px;
-  height: 1900px;
   display: flex;
   flex-direction: column;
   box-sizing: border-box;
-  scrollbar-color: blue orange;
   margin: 0 20px;
   padding: 20px 0;
 
@@ -42,13 +49,13 @@ const Box = styled.div`
 
 const DynamicContain = styled.div`
   width: 100%;
-  height: 230px;
+  max-height: 230px;
   display: flex;
   justify-content: space-between;
 `;
 
 const DynamicList = styled.div`
-  width: 18%;
+  width: 19%;
   height: 100%;
   border-radius: 8px;
   display: flex;
@@ -58,6 +65,14 @@ const DynamicList = styled.div`
   cursor: pointer;
   background-color: ${({ theme }) => theme.background};
   box-shadow: 0 10px 8px rgb(0 0 0 / 10%), 0 2px rgb(0 0 0 / 10%);
+
+  ${MEDIA_QUERY_Header_MB} {
+    width: 24%;
+  }
+
+  ${MEDIA_QUERY_SideBar} {
+    width: 19%;
+  }
 
   & + & {
     align-items: center;
@@ -87,7 +102,15 @@ const DynamicListMyselfText = styled(DynamicList)`
   }
 `;
 
-const DynamicListRWD = styled(DynamicList)``;
+const DynamicListRWD = styled(DynamicList)`
+  ${MEDIA_QUERY_Header_MB} {
+    display: none;
+  }
+  ${MEDIA_QUERY_SideBar} {
+    display: block;
+    width: 19%;
+  }
+`;
 
 const DynamicListIbg = styled.img`
   max-height: 100%;
@@ -138,7 +161,8 @@ const PostMyselfMain = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  border-bottom: 1px solid #e4e6eb;
+  border-bottom: 1px solid;
+  border-color: ${({ theme }) => theme.borderBackGround};
 `;
 
 const PostMyselfLogo = styled.div`
@@ -154,12 +178,13 @@ const PostMyselfLogo = styled.div`
 
 const PostMyselfImg = styled.img`
   max-height: 100%;
+  cursor: pointer;
 `;
 
 const PostMyselfInput = styled.input`
   width: 88%;
-  height: 25px;
-  background-color: #f0f2f5;
+  height: 22px;
+  background-color: ${({ theme }) => theme.searchBackground};
   padding: 8px 12px;
   box-sizing: box-sizing;
   border-radius: 20px;
@@ -238,6 +263,10 @@ const PostContain = styled.div`
   flex-direction: column;
   border-radius: 10px;
   box-shadow: 0 10px 15px rgb(0 0 0 / 10%), 0 1px rgb(0 0 0 / 10%);
+
+  & + & {
+    margin-top: 20px;
+  }
 `;
 
 const PostAuthContain = styled.div`
@@ -275,10 +304,14 @@ const PostAuthDete = styled.div`
   color: #65676b;
 `;
 
-const PostDeleteBtn = styled.img`
+const PostBtn = styled.img`
   cursor: pointer;
-  width: 30px;
-  height: 30px;
+  width: 20px;
+  height: 20px;
+
+  & + & {
+    margin-left: 20px;
+  }
 `;
 
 const PostContentContain = styled.div`
@@ -308,9 +341,9 @@ const PostContentNiceNumber = styled.div`
 `;
 
 const PostContentNiceNumberImg = styled.img`
-  width: 30px;
-  height: 30px;
-  margin-right:5px;
+  width: 25px;
+  height: 25px;
+  margin-right: 7px;
 `;
 
 const PostContentNiceCheck = styled.div`
@@ -319,49 +352,78 @@ const PostContentNiceCheck = styled.div`
   cursor: pointer;
 `;
 
-const Post = ({
-  user,
-  title,
-  dete,
-  content,
-  src,
-  goodNumber,
-  onClickDelete,
-  onClickNice,
-}) => {
-  return (
-    <PostContain>
-      <PostAuthContain>
-        <PostMyselfLogo>
-          <PostMyselfImg />
-          {user}
-        </PostMyselfLogo>
-        <PostAuthDataContain>
-          <PostAuthData>
-            <PostAuthTitle>{title}</PostAuthTitle>
-            <PostAuthDete>{dete}</PostAuthDete>
-          </PostAuthData>
-          <PostDeleteBtn onClick={onClickDelete} />
-        </PostAuthDataContain>
-      </PostAuthContain>
-      <PostContentContain>{content}</PostContentContain>
-      <PostContentImg src={src} />
-      <PostContentNice>
-        <PostContentNiceNumber>
-          <PostContentNiceNumberImg src="" /> 444
-        </PostContentNiceNumber>
-        <PostContentNiceCheck>
-          <PostContentNiceNumberImg src="" /> 讚
-        </PostContentNiceCheck>
-      </PostContentNice>
-    </PostContain>
-  );
-};
+const PostContentNiceChage = styled(PostContentNiceNumberImg)`
+  width: 30px;
+  height: 30px;
+`;
 
 export default function HomePages() {
   const { user, setUser } = useContext(AuthContext);
 
-  const { colorMode } = useContext(ThemeContext);
+  const { colorMode, returnClick } = useContext(ThemeContext);
+
+  const navigate = useNavigate();
+
+  const Post = ({
+    colorMode,
+    user,
+    title,
+    dete,
+    content,
+    src,
+    goodNumber,
+    onClickDelete,
+  }) => {
+    const [nice, setNice] = useState(false);
+
+    function niceClick() {
+      setNice(!nice);
+    }
+
+    function handleUpdatePost() {
+      navigate("/update");
+    }
+
+    return (
+      <PostContain>
+        <PostAuthContain>
+          <PostMyselfLogo>
+            <PostMyselfImg />
+            {user}
+          </PostMyselfLogo>
+          <PostAuthDataContain>
+            <PostAuthData>
+              <PostAuthTitle>{title}</PostAuthTitle>
+              <PostAuthDete>{dete}</PostAuthDete>
+            </PostAuthData>
+            <div style={{ display: "flex" }}>
+              <PostBtn
+                onClick={handleUpdatePost}
+                src={colorMode === "light" ? edit : editDark}
+              />
+              <PostBtn
+                onClick={onClickDelete}
+                src={colorMode === "light" ? cross : crossDark}
+              />
+            </div>
+          </PostAuthDataContain>
+        </PostAuthContain>
+        <PostContentContain>{content}</PostContentContain>
+        <PostContentImg src={src} />
+        <PostContentNice>
+          <PostContentNiceNumber>
+            <PostContentNiceNumberImg src={niceImg} /> {goodNumber}
+          </PostContentNiceNumber>
+          <PostContentNiceCheck onClick={niceClick}>
+            <PostContentNiceChage
+              src={nice ? (colorMode === "light" ? noGood : noGoodDark) : good}
+            />{" "}
+            {nice ? "讚" : "已讚"}
+          </PostContentNiceCheck>
+        </PostContentNice>
+      </PostContain>
+    );
+  };
 
   return (
     <>
@@ -375,11 +437,31 @@ export default function HomePages() {
         </DynamicContain>
         <PostMyself user="User" />
         <Post
+          colorMode={colorMode}
           user="User"
           title="奇摩"
           dete="2011-11-11"
           content="我好帥"
           src={work02}
+          goodNumber="777"
+        />
+        <Post
+          colorMode={colorMode}
+          user="User"
+          title="奇摩"
+          dete="2011-11-11"
+          content="我好帥"
+          src={work02}
+          goodNumber="777"
+        />
+        <Post
+          colorMode={colorMode}
+          user="User"
+          title="奇摩"
+          dete="2011-11-11"
+          content="我好帥"
+          src={work02}
+          goodNumber="777"
         />
       </Box>
     </>

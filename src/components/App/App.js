@@ -1,10 +1,12 @@
 import { Routes, Route, useLocation } from "react-router-dom";
 import styled from "styled-components";
-import Header from "../Header/Header";
-import Sidebar from "../Sidebar/Sidebar";
+import Header from "../Header";
+import Sidebar from "../Sidebar";
 import ConnectionBar from "../ConnectionBar";
-import LoginPages from "../../pages/LoginPages/LoginPages";
-import HomePages from "../../pages/HomePages/HomePages";
+import LoginPages from "../../pages/LoginPages";
+import HomePages from "../../pages/HomePages";
+import UpdatePages from "../../pages/UpdatePages";
+import MyselfPages from "../../pages/MyselfPages";
 import { ThemeProvider } from "styled-components";
 import { useState } from "react";
 import { ThemeContext, AuthContext } from "../../context/context";
@@ -19,7 +21,10 @@ const theme = {
     searchBackground: "#f0f2f5",
     logoImgBackground: "#e4e6eb",
     bodyBackGroundColor: "#f0f2f5",
-    setUpMainBackGroundColor:"white",
+    setUpMainBackGroundColor: "white",
+    borderBackGround: "#ced0d4",
+    scrollbarColor: "#bcc0c4",
+    setUpHoverBackGroundColor: "#e4e6eb",
   },
   dark: {
     placeholderColor: "#b0b3b8",
@@ -28,29 +33,30 @@ const theme = {
     color: "#e4e6eb",
     searchBackground: "#3a3b3c",
     logoImgBackground: "#3a3b3c",
-    bodyBackGroundColor: "#f0f2f5",
-    setUpMainBackGroundColor:"#37393a",
+    bodyBackGroundColor: "#161718",
+    setUpMainBackGroundColor: "#37393a",
+    borderBackGround: "#3e4042",
+    scrollbarColor: "#5e5e5f",
+    setUpHoverBackGroundColor: "#474849",
   },
 };
 
 const MainBox = styled.div`
-  width:100%;
-  padding-top: 56px;
+  width: 100%;
+  padding-top: ${(props) => (props.state ? "56px" : "0px")};
   display: flex;
-  justify-content:space-between;
+  justify-content: space-between;
   box-sizing: border-box;
-  background-color:${({ theme }) => theme.bodyBackGroundColor};
+  background-color: ${({ theme }) => theme.bodyBackGroundColor};
 
-  ${MEDIA_QUERY_Header_SMALL}{
-    justify-content:center;
+  ${MEDIA_QUERY_Header_SMALL} {
+    justify-content: center;
   }
 `;
 
-
-
 export default function App() {
   const [colorMode, setColorMode] = useState("light");
-  const [user, setUser] = useState(null);
+  const [user, setUser] = useState(true);
   const [searchLogo, setSearchLogo] = useState(true);
   const [menuChange, setMenuChange] = useState(false);
   const [setUpChange, setSetUpChange] = useState(false);
@@ -111,21 +117,24 @@ export default function App() {
           }}
         >
           <ThemeProvider theme={theme[colorMode]}>
-            {pathname !== "/login" ? <Header /> : ""}
-            {/* {pathname !== "/login" ? <Sidebar />:""}
-            {pathname !== "/login" ? <ConnectionBar />:""}
-            {pathname !== "/login" ? <HomePages />:""} */}
-            <MainBox onClick={returnClick}>
-            <Sidebar />
-            <HomePages/>
-            <ConnectionBar/>
+            <Routes>
+              <Route path="/" element={!user && <LoginPages />} />
+            </Routes>
+            {user && <Header />}
+            <MainBox state={user} onClick={returnClick}>
+              {user && <Sidebar />}
+              <Routes>
+                <Route path="/" element={user && <HomePages />} />
+              </Routes>
+              <Routes>
+                <Route path="/update" element={user && <UpdatePages />} />
+              </Routes>
+              <Routes>
+                <Route path="/myself" element={user && <MyselfPages />} />
+              </Routes>
+              {user && <ConnectionBar />}
             </MainBox>
-            <Routes>
-              {/* <Route path="/" element={pathname !== "/login" ? <HomePages /> : ""}/> */}
-            </Routes>
-            <Routes>
-              <Route path="/login" element={<LoginPages />} />
-            </Routes>
+            <Routes></Routes>
           </ThemeProvider>
         </AuthContext.Provider>
       </ThemeContext.Provider>

@@ -156,6 +156,7 @@ const RemarkText = styled.div`
   width:100%;
   text-align: center;
   font-size: 14px;
+  box-sizing:box-sizing;
 
   ${MEDIA_QUERY_MB} {
     width: 400px;
@@ -198,7 +199,7 @@ const Login = ({}) => {
 const FooterArea = styled.div`
   background-color: #ffffff;
   width: 100%;
-  padding: 22px 0;
+  padding: 10px 0;
   box-sizing: border-box;
 `;
 

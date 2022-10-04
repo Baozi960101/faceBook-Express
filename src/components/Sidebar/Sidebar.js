@@ -34,9 +34,24 @@ const Area = styled.div`
   padding-top:4px;
   height:calc(100vh - 64px);
   overflow-y:auto;
+  overflow-y: overlay;
   overflow-x:hidden;
   position:sticky;
   top:60px;
+
+  ::-webkit-scrollbar{
+    width:8px;
+  }
+
+  ::-webkit-scrollbar-thumb{
+    background: ${({ theme }) => theme.scrollbarColor};
+    border-radius: 20px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: ${({ theme }) => theme.bodyBackGroundColor};
+    border-radius: 0;
+  }
 
   ${MEDIA_QUERY_Header_MB}{
     min-width:280px;
@@ -44,6 +59,8 @@ const Area = styled.div`
   ${MEDIA_QUERY_SideBar}{
     display:none;
   }
+
+  
 `
 
 const Box = styled.div`

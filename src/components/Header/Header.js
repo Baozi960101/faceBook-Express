@@ -1,11 +1,12 @@
 import { useState, useContext } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation,useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import facebookLogo from "../../image/facebookLogo.svg";
 import search from "../../image/search.svg";
 import arrowLeft from "../../image/arrowLeft.svg";
 import arrowLeftDark from "../../image/arrowLeftDark.svg";
 import home from "../../image/home.svg";
+import homeDark from "../../image/homeDark.svg";
 import homeClick from "../../image/homeClick.svg";
 import watch from "../../image/watch.svg";
 import watchDark from "../../image/watchDark.svg";
@@ -226,7 +227,7 @@ const ClassificationHover = styled.div`
   border-radius: 5px;
 
   :hover {
-    background-color: ${({ theme }) => theme.headerHoverColor};
+    background-color: ${({ theme }) => theme.setUpHoverBackGroundColor};
   }
 `;
 
@@ -377,7 +378,7 @@ const SetUpMyself = styled.div`
   cursor: pointer;
 
   :hover {
-    background-color: ${({ theme }) => theme.headerHoverColor};
+    background-color: ${({ theme }) => theme.setUpHoverBackGroundColor};
   }
 `;
 
@@ -401,7 +402,7 @@ const SetUpContain = styled.div`
   cursor: pointer;
 
   :hover {
-    background-color: ${({ theme }) => theme.headerHoverColor};
+    background-color: ${({ theme }) => theme.setUpHoverBackGroundColor};
   }
 `;
 
@@ -442,7 +443,7 @@ const SetUpArrow = styled.img`
   height: 24px;
 `;
 
-const SetUpList = ({ img, text, onClick, arrow }) => {
+const SetUpList = ({ img, text, onClick, arrow}) => {
   return (
     <SetUpContain onClick={onClick}>
       <SetUpCaption>
@@ -508,6 +509,16 @@ export default function Header() {
   } = useContext(ThemeContext);
 
   const { pathname } = useLocation();
+  const navigate = useNavigate()
+
+  function handleChangeMyselfData() {
+    navigate("/myself")
+  }
+
+  function logOutClick() {
+    setUser(false)
+    navigate("/")
+  }
 
   const Classification = ({ href, clickImg, img, text, width }) => {
     const [classificationClick, setClassificationClick] = useState(false);
@@ -556,7 +567,7 @@ export default function Header() {
         <ClassificationArea>
           <Classification
             href="/"
-            img={home}
+            img={colorMode === "light" ? home : homeDark}
             clickImg={homeClick}
             text="首頁"
           />
@@ -620,6 +631,7 @@ export default function Header() {
               arrow={colorMode === "light" ? arrowRight : arrowRightDark}
             />
             <SetUpList
+              onClick={logOutClick}
               img={colorMode === "light" ? logout : logoutDark}
               text="登出"
             />
@@ -638,6 +650,11 @@ export default function Header() {
               img={colorMode === "light" ? setting : settingDark}
               text="個人"
             />
+            <SetUpContain onClick={handleChangeMyselfData}>
+                <ThemeMode>
+                  <div>修改資料及更改帳密</div>
+                </ThemeMode>
+            </SetUpContain>
           </OtherSetUp>
           <OtherSetUp action={moreShow}>
             <OtherSetUpContain
