@@ -4,7 +4,6 @@ import {
   BarList,
   PersonalBarList,
   FunctionBarList,
-  BarListPlainText,
   Curve,
   HideBarList
 } from "../BarList/BarList";
@@ -38,17 +37,6 @@ const Area = styled.div`
   overflow-x:hidden;
   position:sticky;
   top:60px;
-`
-
-const Box = styled.div`
-  background-color: ${({ theme }) => theme.background};
-  max-width: 360px;
-  display: flex;
-  align-items: center;
-  flex-direction: column;
-  box-sizing: border-box;
-  min-height: 93.5%;
-  
 
   ${MEDIA_QUERY_Header_MB}{
     min-width:280px;
@@ -56,12 +44,23 @@ const Box = styled.div`
   ${MEDIA_QUERY_SideBar}{
     display:none;
   }
+`
+
+const Box = styled.div`
+  background-color: ${({ theme }) => theme.bodyBackGroundColor};
+  max-width: 360px;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  box-sizing: border-box;
+  min-height: 93.5%;
+  
 `;
 
 const Footer = styled.div`
   max-width: 360px;
   height: 55px;
-  background-color: ${({ theme }) => theme.background};
+  background-color: ${({ theme }) => theme.bodyBackGroundColor};
   color: ${({ theme }) => theme.color};
   font-size:13px;
   display: flex;

@@ -13,7 +13,7 @@ import { MEDIA_QUERY_Header_SMALL } from "../../constants/style";
 const theme = {
   light: {
     placeholderColor: "#65676b",
-    headerHoverColor: "#f0f2f5",
+    headerHoverColor: "#e4e6eb",
     background: "white",
     color: "#1c1e21",
     searchBackground: "#f0f2f5",
@@ -39,7 +39,7 @@ const MainBox = styled.div`
   display: flex;
   justify-content:space-between;
   box-sizing: border-box;
-  background-color:${({ theme }) => theme.background};
+  background-color:${({ theme }) => theme.bodyBackGroundColor};
 
   ${MEDIA_QUERY_Header_SMALL}{
     justify-content:center;
@@ -115,7 +115,7 @@ export default function App() {
             {/* {pathname !== "/login" ? <Sidebar />:""}
             {pathname !== "/login" ? <ConnectionBar />:""}
             {pathname !== "/login" ? <HomePages />:""} */}
-            <MainBox>
+            <MainBox onClick={returnClick}>
             <Sidebar />
             <HomePages/>
             <ConnectionBar/>

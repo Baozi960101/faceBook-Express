@@ -9,6 +9,8 @@ export const MEDIA_QUERY_Header_MIDD = "@media screen and (max-width: 1000px)";
 
 export const MEDIA_QUERY_Header_SMALL = "@media screen and (max-width: 900px)";
 
+export const MEDIA_QUERY_Header_Classification = "@media screen and (max-width: 1400px)";
+
 export const MEDIA_QUERY_Header_LG = "@media screen and (max-width: 700px)";
 
 export const MEDIA_QUERY_SideBar = "@media screen and (max-width: 1100px)";

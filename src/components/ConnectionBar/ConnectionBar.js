@@ -29,7 +29,7 @@ const Area = styled.div`
 `
 
 const Box = styled.div`
-  background-color: ${({ theme }) => theme.background};
+  background-color: ${({ theme }) => theme.bodyBackGroundColor};
   display: flex;
   align-items: center;
   flex-direction: column;

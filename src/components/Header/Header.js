@@ -34,9 +34,10 @@ import circle from "../../image/circle.svg";
 import { ThemeContext } from "../../context/context";
 import {
   MEDIA_QUERY_Header_MB,
-  MEDIA_QUERY_Header_MIDD,
+  MEDIA_QUERY_Header_Classification,
   MEDIA_QUERY_Header_SMALL,
   MEDIA_QUERY_Header_LG,
+  MEDIA_QUERY_Header_MIDD,
 } from "../../constants/style";
 import { AuthContext } from "../../context/context";
 
@@ -52,7 +53,7 @@ const Box = styled.div`
   box-shadow: 0 1px 4px rgb(0 0 0 / 10%), 0 2px 16px rgb(0 0 0 / 10%);
   padding: 0 15px;
   box-sizing: border-box;
-  z-index:1;
+  z-index: 1;
 `;
 
 const SearchArea = styled.div`
@@ -159,6 +160,12 @@ const Search = ({ searchLogo, returnClick, searchClick, onClick }) => {
 const ClassificationArea = styled.div`
   display: flex;
   height: 100%;
+  margin-right: 100px;
+
+  ${MEDIA_QUERY_Header_MB} {
+    margin-right: 0px;
+    margin-left: 98px;
+  }
 `;
 
 const ClassificationContains = styled.a`
@@ -175,13 +182,18 @@ const ClassificationContains = styled.a`
     margin-left: 7px;
   }
 
-  ${MEDIA_QUERY_Header_MIDD} {
+  ${MEDIA_QUERY_Header_Classification} {
     width: 110px;
+  }
+
+  ${MEDIA_QUERY_Header_MIDD}{
+    width: 80px;
   }
 
   ${MEDIA_QUERY_Header_SMALL} {
     width: 50px;
   }
+
 
   ${MEDIA_QUERY_Header_LG} {
     display: none;
@@ -590,7 +602,7 @@ export default function Header() {
             <SetUpMyself>
               <SetUpMyselfName>
                 <PersonalInformationList style={{ marginRight: "10px" }}>
-                User
+                  User
                 </PersonalInformationList>
                 User
               </SetUpMyselfName>
