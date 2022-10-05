@@ -5,8 +5,8 @@ import {
   PersonalBarList,
   Curve,
 } from "../BarList/BarList";
-import sidebar_user from "../../image/sidebar_user.png";
-import sidebar_society from "../../image/sidebar_society.png";
+import datePhone from "../../image/datePhone.svg";
+import dateMail from "../../image/dateMail.svg";
 
 import { ThemeContext } from "../../context/context";
 import { AuthContext } from "../../context/context";
@@ -46,15 +46,13 @@ const Box = styled.div`
 export default function ConnectionBar() {
   const { user, setUser } = useContext(AuthContext);
 
-  const { colorMode } = useContext(ThemeContext);
-
   return (
     <>
       <Area>
       <Box>
         <PersonalBarList text="姓名" />
-        <BarList src={sidebar_user} text="0978026876" />
-        <BarList src={sidebar_society} text="Baozi960101@gmail.com" />
+        <BarList src={datePhone} text="0978026876" />
+        <BarList src={dateMail} text="Baozi960101@gmail.com" />
         <Curve />
       </Box>
       </Area>

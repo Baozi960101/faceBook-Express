@@ -337,9 +337,15 @@ const RegisterBtn = styled.div`
 const Register = ({
   close,
   nickname,
+  username,
+  password,
+  phone,
+  mail,
   handelNickname,
   handelPassWord,
   handelUsername,
+  handelPhone,
+  handelMail,
   active,
   err,
   login,
@@ -356,11 +362,26 @@ const Register = ({
           value={nickname}
           placeholder="設定暱稱"
         />
-        <LoginInput onChange={handelUsername} placeholder="設定帳號" />
+        <LoginInput
+          onChange={handelUsername}
+          value={username}
+          placeholder="設定帳號"
+        />
         <LoginInput
           onChange={handelPassWord}
+          value={password}
           type="password"
           placeholder="設定密碼"
+        />
+        <LoginInput
+          onChange={handelPhone}
+          value={phone}
+          placeholder="設定電話，不填可留白"
+        />
+        <LoginInput
+          onChange={handelMail}
+          value={mail}
+          placeholder="設定電子信箱，不填可留白"
         />
         <RegisterError active={err}>請填完整</RegisterError>
         <RegisterBtn onClick={login}>建立新帳號</RegisterBtn>
@@ -376,6 +397,8 @@ export default function LoginPages() {
   const [creatNickname, setCreatNickname] = useState("");
   const [creatUsername, setCreatUsername] = useState("");
   const [creatPassword, setCreatPassword] = useState("");
+  const [creatPhone, setCreatPhone] = useState("");
+  const [creatMail, setCreatMail] = useState("");
 
   const [loginFail, setLoginFail] = useState(false);
   const [errArea, setErrArea] = useState(false);
@@ -392,6 +415,11 @@ export default function LoginPages() {
 
   function handleRegister() {
     setRegister(!register);
+    setCreatNickname("");
+    setCreatUsername("");
+    setCreatPassword("");
+    setCreatPhone("");
+    setCreatMail("");
   }
 
   function handleRegisterNick(e) {
@@ -409,6 +437,16 @@ export default function LoginPages() {
     setCreatPassword(e.target.value);
   }
 
+  function handleRegisterPhone(e) {
+    setErrArea(false);
+    setCreatPhone(e.target.value);
+  }
+
+  function handleRegisterMail(e) {
+    setErrArea(false);
+    setCreatMail(e.target.value);
+  }
+
   function handleLogin() {
     if (username === "" || password === "") {
       setLoginFail(true);
@@ -423,7 +461,18 @@ export default function LoginPages() {
       setErrArea(true);
       return;
     }
-    console.log(creatNickname, creatUsername, creatPassword);
+    setCreatNickname("");
+    setCreatUsername("");
+    setCreatPassword("");
+    setCreatPhone("");
+    setCreatMail("");
+    console.log(
+      creatNickname,
+      creatUsername,
+      creatPassword,
+      creatPhone,
+      creatMail
+    );
   }
 
   return (
@@ -435,9 +484,15 @@ export default function LoginPages() {
           err={errArea}
           login={handleRegisterLogin}
           nickname={creatNickname}
+          username={creatUsername}
+          password={creatPassword}
+          phone={creatPhone}
+          mail={creatMail}
           handelNickname={handleRegisterNick}
           handelUsername={handleRegisterUser}
           handelPassWord={handleRegisterPass}
+          handelPhone={handleRegisterPhone}
+          handelMail={handleRegisterMail}
         />
         <LogoArea />
         <div>

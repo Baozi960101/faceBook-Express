@@ -1,5 +1,5 @@
 import { useState, useContext } from "react";
-import { useLocation,useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import facebookLogo from "../../image/facebookLogo.svg";
 import search from "../../image/search.svg";
@@ -187,14 +187,13 @@ const ClassificationContains = styled.a`
     width: 110px;
   }
 
-  ${MEDIA_QUERY_Header_MIDD}{
+  ${MEDIA_QUERY_Header_MIDD} {
     width: 80px;
   }
 
   ${MEDIA_QUERY_Header_SMALL} {
     width: 50px;
   }
-
 
   ${MEDIA_QUERY_Header_LG} {
     display: none;
@@ -375,7 +374,6 @@ const SetUpMyself = styled.div`
   box-shadow: 0 10px 8px 5px rgb(0 0 0 / 10%), 0 2px 5px rgb(0 0 0 / 10%);
   box-sizing: border-box;
   padding-top: 10px;
-  cursor: pointer;
 
   :hover {
     background-color: ${({ theme }) => theme.setUpHoverBackGroundColor};
@@ -443,7 +441,7 @@ const SetUpArrow = styled.img`
   height: 24px;
 `;
 
-const SetUpList = ({ img, text, onClick, arrow}) => {
+const SetUpList = ({ img, text, onClick, arrow }) => {
   return (
     <SetUpContain onClick={onClick}>
       <SetUpCaption>
@@ -509,15 +507,15 @@ export default function Header() {
   } = useContext(ThemeContext);
 
   const { pathname } = useLocation();
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   function handleChangeMyselfData() {
-    navigate("/myself")
+    navigate("/myself");
   }
 
   function logOutClick() {
-    setUser(false)
-    navigate("/")
+    setUser(false);
+    navigate("/");
   }
 
   const Classification = ({ href, clickImg, img, text, width }) => {
@@ -608,7 +606,12 @@ export default function Header() {
             setMoreSetting(false);
           }}
         />
-        <SetUpMain action={setUpChange}>
+        <SetUpMain
+          onClick={(e) => {
+            e.stopPropagation();
+          }}
+          action={setUpChange}
+        >
           <SetUpArea action={moreSetting || moreShow}>
             <SetUpMyself>
               <SetUpMyselfName>
@@ -651,9 +654,9 @@ export default function Header() {
               text="個人"
             />
             <SetUpContain onClick={handleChangeMyselfData}>
-                <ThemeMode>
-                  <div>修改資料及更改帳密</div>
-                </ThemeMode>
+              <ThemeMode>
+                <div>修改資料及更改帳密</div>
+              </ThemeMode>
             </SetUpContain>
           </OtherSetUp>
           <OtherSetUp action={moreShow}>

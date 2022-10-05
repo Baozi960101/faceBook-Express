@@ -45,7 +45,7 @@ const PostContain = styled.div`
   box-shadow: 0 10px 15px rgb(0 0 0 / 10%), 0 1px rgb(0 0 0 / 10%);
 
   & + & {
-    margin-top: 20px;
+    margin-top: 50px;
   }
 `;
 
@@ -135,14 +135,16 @@ const ValueInput = styled.input`
 export default function MyselfPages() {
   const { user, setUser } = useContext(AuthContext);
 
-  const [username, setUsername] = useState(null);
+  const [nickname, setNickname] = useState(null);
   const [pass, setPass] = useState(null);
   const [passAgain, setPassAgain] = useState(null);
+  const [phone, setPhone] = useState(null);
+  const [mail, setMail] = useState(null);
 
   const [img, setImg] = useState("");
 
-  function handleChangeUser(e) {
-    setUsername(e.target.value);
+  function handleChangeNick(e) {
+    setNickname(e.target.value);
   }
 
   function handleChangePass(e) {
@@ -153,26 +155,36 @@ export default function MyselfPages() {
     setPassAgain(e.target.value);
   }
 
+  function handleChangePhone(e) {
+    setPhone(e.target.value);
+  }
+
+  function handleChangeMail(e) {
+    setMail(e.target.value);
+  }
+
   function handleChangeImg(e) {
     setImg(e.target.value);
+  }
+
+  function upDatePassword() {
+    if (pass === passAgain) {
+      console.log(pass, "送出");
+    }
+    return;
+  }
+
+  function upDateMyself() {
+    console.log(nickname, phone, mail);
   }
 
   return (
     <>
       <Box>
         <PostContain>
-          <PostUpdateTitle>更改個人資料</PostUpdateTitle>
-          <UpdateHeadArea>
-            <UpdateHeadContains>
-              <UpdateHead src="" />
-            </UpdateHeadContains>
-          </UpdateHeadArea>
+          <PostUpdateTitle>更改密碼</PostUpdateTitle>
           <DateContent>
-            <DateTitle>暱稱 :</DateTitle>
-            <ValueInput onChange={handleChangeUser} value={username} />
-          </DateContent>
-          <DateContent>
-            <DateTitle>密碼 :</DateTitle>
+            <DateTitle>新密碼 :</DateTitle>
             <ValueInput
               type="password"
               onChange={handleChangePass}
@@ -187,7 +199,28 @@ export default function MyselfPages() {
               value={passAgain}
             />
           </DateContent>
-          <Btn>送出</Btn>
+          <Btn onClick={upDatePassword}>送出</Btn>
+        </PostContain>
+        <PostContain>
+          <PostUpdateTitle>更改個人資料</PostUpdateTitle>
+          <UpdateHeadArea>
+            <UpdateHeadContains>
+              <UpdateHead src="" />
+            </UpdateHeadContains>
+          </UpdateHeadArea>
+          <DateContent>
+            <DateTitle>暱稱 :</DateTitle>
+            <ValueInput onChange={handleChangeNick} value={nickname} />
+          </DateContent>
+          <DateContent>
+            <DateTitle>電話 :</DateTitle>
+            <ValueInput onChange={handleChangePhone} value={phone} />
+          </DateContent>
+          <DateContent>
+            <DateTitle>電子信箱 :</DateTitle>
+            <ValueInput onChange={handleChangeMail} value={mail} />
+          </DateContent>
+          <Btn onClick={upDateMyself}>送出</Btn>
         </PostContain>
       </Box>
     </>

@@ -54,9 +54,10 @@ export const BarListPlainText = styled.div`
 `;
 
 const BarListIcon = styled.img`
-  width: 36px;
-  height: 36px;
+  width: 25px;
+  height: 25px;
   margin-right: 12px;
+  margin-left: 5px;
 `;
 
 const PersonalBarListArea = styled.div`

@@ -122,7 +122,7 @@ const DynamicMyself = ({ src }) => {
       <DynamicListMyself>
         <DynamicListIbg src={src} />
       </DynamicListMyself>
-      <DynamicListMyselfText>現實動態</DynamicListMyselfText>
+      <DynamicListMyselfText>最新文章</DynamicListMyselfText>
     </DynamicList>
   );
 };
