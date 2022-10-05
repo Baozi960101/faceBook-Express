@@ -4,6 +4,7 @@ import {
   MEDIA_QUERY_Header_SMALL,
   MEDIA_QUERY_Header_MB,
   MEDIA_QUERY_SideBar,
+  MEDIA_QUERY
 } from "../../constants/style";
 import work02 from "../../image/work02.png";
 import { ThemeContext, AuthContext } from "../../context/context";
@@ -34,6 +35,12 @@ const Box = styled.div`
   }
   ${MEDIA_QUERY_Header_SMALL} {
     max-width: 680px;
+  }
+
+  ${MEDIA_QUERY}{
+    padding-top:70px;
+    width:95%;
+    margin: auto;
   }
 `;
 

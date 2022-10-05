@@ -1,5 +1,9 @@
 import styled from "styled-components";
-import { MEDIA_QUERY_MB, MEDIA_QUERY_MIDD } from "../../constants/style";
+import {
+  MEDIA_QUERY_MB,
+  MEDIA_QUERY_MIDD,
+  MEDIA_QUERY,
+} from "../../constants/style";
 import facebook from "../../image/facebook.svg";
 import cross from "../../image/cross.svg";
 import { useState } from "react";
@@ -28,6 +32,10 @@ const TitieContains = styled.div`
 
   ${MEDIA_QUERY_MB} {
     width: 400px;
+  }
+
+  ${MEDIA_QUERY} {
+    margin-top: 50px;
   }
 `;
 
@@ -360,28 +368,28 @@ const Register = ({
         <LoginInput
           onChange={handelNickname}
           value={nickname}
-          placeholder="設定暱稱"
+          placeholder="設定暱稱，必填"
         />
         <LoginInput
           onChange={handelUsername}
           value={username}
-          placeholder="設定帳號"
+          placeholder="設定帳號，必填"
         />
         <LoginInput
           onChange={handelPassWord}
           value={password}
           type="password"
-          placeholder="設定密碼"
+          placeholder="設定密碼，必填"
         />
         <LoginInput
           onChange={handelPhone}
           value={phone}
-          placeholder="設定電話，不填可留白"
+          placeholder="設定電話，選填"
         />
         <LoginInput
           onChange={handelMail}
           value={mail}
-          placeholder="設定電子信箱，不填可留白"
+          placeholder="設定電子信箱，選填"
         />
         <RegisterError active={err}>請填完整</RegisterError>
         <RegisterBtn onClick={login}>建立新帳號</RegisterBtn>

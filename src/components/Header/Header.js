@@ -39,11 +39,13 @@ import {
   MEDIA_QUERY_Header_SMALL,
   MEDIA_QUERY_Header_LG,
   MEDIA_QUERY_Header_MIDD,
+  MEDIA_QUERY,
 } from "../../constants/style";
 import { AuthContext } from "../../context/context";
 
 const Box = styled.div`
   display: flex;
+  flex-wrap:wrap;
   align-items: center;
   justify-content: space-between;
   width: 100%;
@@ -55,6 +57,11 @@ const Box = styled.div`
   padding: 0 15px;
   box-sizing: border-box;
   z-index: 1;
+
+  ${MEDIA_QUERY} {
+    padding-top:4px;
+    height:auto;
+  }
 `;
 
 const SearchArea = styled.div`
@@ -200,6 +207,28 @@ const ClassificationContains = styled.a`
   }
 `;
 
+const ClassificationContainsRWD = styled.a`
+  width: 20%;
+  height: 50px;
+  box-sizing: border-box;
+  border-bottom: ${(props) => (props.action ? "3px solid #3181e6" : "")};
+  box-sizing: box-sizing;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+`;
+
+const ClassificationAreaRWD = styled.div`
+  display:none;
+  width:100%;
+  
+  ${MEDIA_QUERY} {
+    display:flex;
+    justify-content:space-between;
+  }
+`;
+
 const ClassificationRWD = styled.div`
   width: 50px;
   height: 100%;
@@ -214,6 +243,10 @@ const ClassificationRWD = styled.div`
     display: flex;
     align-items: center;
     justify-content: center;
+  }
+  
+  ${MEDIA_QUERY} {
+    display: none;
   }
 `;
 
@@ -234,7 +267,7 @@ const ClassificationLogo = styled.img`
   width: 25px;
 `;
 
-const Test = styled.div`
+const Block = styled.div`
   position: absolute;
   top: 60px;
   background-color: black;
@@ -252,6 +285,10 @@ const PersonalInformationArea = styled.div`
   width: 200px;
   height: 100%;
   cursor: pointer;
+
+  ${MEDIA_QUERY_Header_LG} {
+    width:auto;
+  }
 `;
 
 const PersonalInformationList = styled.div`
@@ -263,30 +300,43 @@ const PersonalInformationList = styled.div`
   border-radius: 40px;
   background-color: ${({ theme }) => theme.logoImgBackground};
   overflow: hidden;
+
 `;
 
 const PersonalInformationLogo = styled.img`
   width: 20px;
 `;
 
+const PersonalInformationListRWD = styled.div`
+  ${MEDIA_QUERY} {
+    display: none;
+  }
+`;
+
 const PersonalInformation = ({ onclick, colorMode }) => {
   return (
     <PersonalInformationArea>
-      <PersonalInformationList>
-        <PersonalInformationLogo
-          src={colorMode === "light" ? grid : gridDark}
-        />
-      </PersonalInformationList>
-      <PersonalInformationList>
-        <PersonalInformationLogo
-          src={colorMode === "light" ? message : messageDark}
-        />
-      </PersonalInformationList>
-      <PersonalInformationList>
-        <PersonalInformationLogo
-          src={colorMode === "light" ? bell : bellDark}
-        />
-      </PersonalInformationList>
+      <PersonalInformationListRWD>
+        <PersonalInformationList>
+          <PersonalInformationLogo
+            src={colorMode === "light" ? grid : gridDark}
+          />
+        </PersonalInformationList>
+      </PersonalInformationListRWD>
+      <PersonalInformationListRWD>
+        <PersonalInformationList>
+          <PersonalInformationLogo
+            src={colorMode === "light" ? message : messageDark}
+          />
+        </PersonalInformationList>
+      </PersonalInformationListRWD>
+      <PersonalInformationListRWD>
+        <PersonalInformationList>
+          <PersonalInformationLogo
+            src={colorMode === "light" ? bell : bellDark}
+          />
+        </PersonalInformationList>
+      </PersonalInformationListRWD>
       <PersonalInformationList onClick={onclick}>User</PersonalInformationList>
     </PersonalInformationArea>
   );
@@ -542,8 +592,37 @@ export default function Header() {
             src={pathname === href ? clickImg : img}
           />
         </ClassificationHover>
-        {classificationClick && <Test>{text}</Test>}
+        {classificationClick && <Block>{text}</Block>}
       </ClassificationContains>
+    );
+  };
+
+  const ClassificationRWD = ({ href, clickImg, img, text, width }) => {
+    const [classificationClick, setClassificationClick] = useState(false);
+
+    function MouseOverClassificationClick() {
+      setClassificationClick(true);
+    }
+
+    function MouseOutClassificationClick() {
+      setClassificationClick(false);
+    }
+
+    return (
+      <ClassificationContainsRWD
+        action={pathname === href}
+        href={href}
+        onMouseOver={MouseOverClassificationClick}
+        onMouseOut={MouseOutClassificationClick}
+      >
+        <ClassificationHover>
+          <ClassificationLogo
+            style={{ width: width }}
+            src={pathname === href ? clickImg : img}
+          />
+        </ClassificationHover>
+        {classificationClick && <Block>{text}</Block>}
+      </ClassificationContainsRWD>
     );
   };
 
@@ -695,7 +774,43 @@ export default function Header() {
             </SetUpContain>
           </OtherSetUp>
         </SetUpMain>
-      </Box>
+        <ClassificationAreaRWD>
+        <ClassificationRWD
+            href="/"
+            img={colorMode === "light" ? home : homeDark}
+            clickImg={homeClick}
+            text="首頁"
+          />
+          <ClassificationRWD
+            href="/watch"
+            img={colorMode === "light" ? watch : watchDark}
+            clickImg={watch}
+            text="Watch"
+            width="35px"
+          />
+          <ClassificationRWD
+            href="/marketplace"
+            img={colorMode === "light" ? market : marketDark}
+            clickImg={market}
+            text="Marketplace"
+            width="35px"
+          />
+          <ClassificationRWD
+            href="/community"
+            img={colorMode === "light" ? community : communityDark}
+            clickImg={community}
+            text="社群"
+            width="35px"
+          />
+          <ClassificationRWD
+            href="/game"
+            img={colorMode === "light" ? puzzle : puzzleDark}
+            clickImg={puzzle}
+            text="遊戲"
+            width="30px"
+          />
+        </ClassificationAreaRWD>  
+      </Box>    
     </>
   );
 }

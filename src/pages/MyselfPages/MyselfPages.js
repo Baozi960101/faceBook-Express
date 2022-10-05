@@ -4,6 +4,7 @@ import {
   MEDIA_QUERY_Header_SMALL,
   MEDIA_QUERY_Header_MB,
   MEDIA_QUERY_SideBar,
+  MEDIA_QUERY,
 } from "../../constants/style";
 import { AuthContext } from "../../context/context";
 
@@ -32,6 +33,12 @@ const Box = styled.div`
   }
   ${MEDIA_QUERY_Header_SMALL} {
     max-width: 680px;
+  }
+
+  ${MEDIA_QUERY} {
+    padding-top: 75px;
+    width: 95%;
+    margin: auto;
   }
 `;
 
@@ -132,6 +139,17 @@ const ValueInput = styled.input`
   }
 `;
 
+const ErrMessage = styled.div`
+  width: 100%;
+  box-sizing: border-box;
+  padding: 20px 18px 0 15px;
+  color: red;
+  font-size: 20px;
+  font-weight: 600;
+  text-align: center;
+  display: ${(props) => (props.active ? "block" : "none")};
+`;
+
 export default function MyselfPages() {
   const { user, setUser } = useContext(AuthContext);
 
@@ -142,6 +160,9 @@ export default function MyselfPages() {
   const [mail, setMail] = useState(null);
 
   const [img, setImg] = useState("");
+
+  const [passErr, setPassErr] = useState(false);
+  const [myDataErr, setMyDataErr] = useState(false);
 
   function handleChangeNick(e) {
     setNickname(e.target.value);
@@ -170,11 +191,17 @@ export default function MyselfPages() {
   function upDatePassword() {
     if (pass === passAgain) {
       console.log(pass, "送出");
+      setPassErr(true);
     }
+    setPassErr(false);
     return;
   }
 
   function upDateMyself() {
+    if (nickname === "") {
+      setMyDataErr(true);
+    }
+    setMyDataErr(false);
     console.log(nickname, phone, mail);
   }
 
@@ -187,6 +214,7 @@ export default function MyselfPages() {
             <DateTitle>新密碼 :</DateTitle>
             <ValueInput
               type="password"
+              placeholder="必填"
               onChange={handleChangePass}
               value={pass}
             />
@@ -195,10 +223,12 @@ export default function MyselfPages() {
             <DateTitle>確認輸入密碼 :</DateTitle>
             <ValueInput
               type="password"
+              placeholder="必填"
               onChange={handleChangePassAgain}
               value={passAgain}
             />
           </DateContent>
+          <ErrMessage active={passErr}>請重新輸入</ErrMessage>
           <Btn onClick={upDatePassword}>送出</Btn>
         </PostContain>
         <PostContain>
@@ -210,16 +240,29 @@ export default function MyselfPages() {
           </UpdateHeadArea>
           <DateContent>
             <DateTitle>暱稱 :</DateTitle>
-            <ValueInput onChange={handleChangeNick} value={nickname} />
+            <ValueInput
+              placeholder="必填"
+              onChange={handleChangeNick}
+              value={nickname}
+            />
           </DateContent>
           <DateContent>
             <DateTitle>電話 :</DateTitle>
-            <ValueInput onChange={handleChangePhone} value={phone} />
+            <ValueInput
+              placeholder="選填"
+              onChange={handleChangePhone}
+              value={phone}
+            />
           </DateContent>
           <DateContent>
             <DateTitle>電子信箱 :</DateTitle>
-            <ValueInput onChange={handleChangeMail} value={mail} />
+            <ValueInput
+              placeholder="選填"
+              onChange={handleChangeMail}
+              value={mail}
+            />
           </DateContent>
+          <ErrMessage active={myDataErr}>請重新輸入</ErrMessage>
           <Btn onClick={upDateMyself}>送出</Btn>
         </PostContain>
       </Box>

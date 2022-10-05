@@ -5,6 +5,7 @@ import {
   MEDIA_QUERY_Header_SMALL,
   MEDIA_QUERY_Header_MB,
   MEDIA_QUERY_SideBar,
+  MEDIA_QUERY
 } from "../../constants/style";
 import edit from "../../image/edit.svg";
 import editDark from "../../image/editDark.svg";
@@ -46,6 +47,12 @@ const Box = styled.div`
   ${MEDIA_QUERY_Header_SMALL} {
     max-width: 680px;
   }
+
+  ${MEDIA_QUERY}{
+    padding-top:40px;
+    width:95%;
+    margin: auto;
+  }
 `;
 
 const DynamicContain = styled.div`
@@ -53,6 +60,10 @@ const DynamicContain = styled.div`
   max-height: 230px;
   display: flex;
   justify-content: space-between;
+
+  ${MEDIA_QUERY}{
+    display:none;
+  }
 `;
 
 const DynamicList = styled.div`

@@ -14,3 +14,5 @@ export const MEDIA_QUERY_Header_Classification = "@media screen and (max-width: 
 export const MEDIA_QUERY_Header_LG = "@media screen and (max-width: 700px)";
 
 export const MEDIA_QUERY_SideBar = "@media screen and (max-width: 1100px)";
+
+export const MEDIA_QUERY = "@media screen and (max-width: 500px)";
