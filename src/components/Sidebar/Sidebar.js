@@ -6,7 +6,7 @@ import {
   FunctionBarList,
   Curve,
   HideBarList
-} from "../BarList/BarList";
+} from "../../global/BarList";
 import sidebar_user from "../../image/sidebar_user.png";
 import sidebar_watch from "../../image/sidebar_watch.png";
 import sidebar_society from "../../image/sidebar_society.png";
@@ -25,10 +25,10 @@ import sidebar_blood from "../../image/sidebar_blood.png";
 import sidebar_advertise from "../../image/sidebar_advertise.png";
 import sidebar_activity from "../../image/sidebar_activity.png";
 
-import { ThemeContext } from "../../context/context";
-import { AuthContext } from "../../context/context";
+import { ThemeContext } from "../../global/context";
+import { AuthContext } from "../../global/context";
 
-import { MEDIA_QUERY_Header_MB , MEDIA_QUERY_SideBar } from "../../constants/style";
+import { MEDIA_QUERY_Header_MB , MEDIA_QUERY_SideBar } from "../../global/style";
 
 const Area = styled.div`
   padding-top:4px;

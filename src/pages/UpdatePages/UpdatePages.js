@@ -5,9 +5,9 @@ import {
   MEDIA_QUERY_Header_MB,
   MEDIA_QUERY_SideBar,
   MEDIA_QUERY
-} from "../../constants/style";
+} from "../../global/style";
 import work02 from "../../image/work02.png";
-import { ThemeContext, AuthContext } from "../../context/context";
+import { ThemeContext, AuthContext } from "../../global/context";
 
 const Box = styled.div`
   padding-top: 10px;

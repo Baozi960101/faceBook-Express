@@ -1,8 +1,8 @@
 import styled from "styled-components";
-import arrowDown from "../../image/arrowDown.svg";
-import arrowDownDark from "../../image/arrowDownDark.svg";
-import arrowUp from "../../image/arrowUp.svg";
-import arrowUpDark from "../../image/arrowUpDark.svg";
+import arrowDown from "../image/arrowDown.svg";
+import arrowDownDark from "../image/arrowDownDark.svg";
+import arrowUp from "../image/arrowUp.svg";
+import arrowUpDark from "../image/arrowUpDark.svg";
 
 const BarListContains = styled.div`
   width: 95%;

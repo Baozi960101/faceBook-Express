@@ -4,14 +4,13 @@ import {
   BarList,
   PersonalBarList,
   Curve,
-} from "../BarList/BarList";
+} from "../../global/BarList";
 import datePhone from "../../image/datePhone.svg";
 import dateMail from "../../image/dateMail.svg";
 
-import { ThemeContext } from "../../context/context";
-import { AuthContext } from "../../context/context";
+import { ThemeContext , AuthContext } from "../../global/context";
 
-import { MEDIA_QUERY_Header_MB , MEDIA_QUERY_SideBar , MEDIA_QUERY_Header_SMALL } from "../../constants/style";
+import { MEDIA_QUERY_Header_MB , MEDIA_QUERY_SideBar , MEDIA_QUERY_Header_SMALL } from "../../global/style";
 
 const Area = styled.div`
   padding-top:4px;

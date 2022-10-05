@@ -3,10 +3,15 @@ import {
   MEDIA_QUERY_MB,
   MEDIA_QUERY_MIDD,
   MEDIA_QUERY,
-} from "../../constants/style";
+} from "../../global/style";
 import facebook from "../../image/facebook.svg";
 import cross from "../../image/cross.svg";
-import { useState } from "react";
+import { useState , useContext } from "react";
+import { useNavigate } from "react-router-dom";
+import { AuthContext } from "../../global/context";
+import { createNewUserAPI , loginAPI } from "../../global/API";
+
+import Swal from "sweetalert2";
 
 const Body = styled.div`
   width: 100%;
@@ -413,6 +418,10 @@ export default function LoginPages() {
 
   const [register, setRegister] = useState(false);
 
+  const { setUser } = useContext(AuthContext);
+
+  const navigate = useNavigate()
+
   function handleUser(e) {
     setUsername(e.target.value);
   }
@@ -461,7 +470,18 @@ export default function LoginPages() {
       return;
     }
     setLoginFail(false);
-    console.log(username, password);
+    loginAPI(
+      username,
+      password,
+    ).then((res)=>{
+      if (res.message === "0") {
+        setLoginFail(true);
+        return
+      }
+      setUser(res)
+      console.log(res);
+      navigate("/");
+    })
   }
 
   function handleRegisterLogin() {
@@ -469,18 +489,27 @@ export default function LoginPages() {
       setErrArea(true);
       return;
     }
-    setCreatNickname("");
-    setCreatUsername("");
-    setCreatPassword("");
-    setCreatPhone("");
-    setCreatMail("");
-    console.log(
+    createNewUserAPI(
       creatNickname,
       creatUsername,
       creatPassword,
       creatPhone,
       creatMail
-    );
+    ).then((res) => {
+      if (res.status === "1") {
+        setRegister(!register);
+        Swal.fire({
+          icon: "success",
+          title: "註冊成功",
+          confirmButtonColor: "#1877F2",
+        });
+        setCreatNickname("");
+        setCreatUsername("");
+        setCreatPassword("");
+        setCreatPhone("");
+        setCreatMail("");
+      }
+    });
   }
 
   return (

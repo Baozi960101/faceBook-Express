@@ -32,7 +32,7 @@ import moonDark from "../../image/moonDark.svg";
 import logout from "../../image/logout.svg";
 import logoutDark from "../../image/logoutDark.svg";
 import circle from "../../image/circle.svg";
-import { ThemeContext } from "../../context/context";
+import { ThemeContext , AuthContext  } from "../../global/context";
 import {
   MEDIA_QUERY_Header_MB,
   MEDIA_QUERY_Header_Classification,
@@ -40,8 +40,7 @@ import {
   MEDIA_QUERY_Header_LG,
   MEDIA_QUERY_Header_MIDD,
   MEDIA_QUERY,
-} from "../../constants/style";
-import { AuthContext } from "../../context/context";
+} from "../../global/style";
 
 const Box = styled.div`
   display: flex;
@@ -564,6 +563,7 @@ export default function Header() {
   }
 
   function logOutClick() {
+    returnClick()
     setUser(false);
     navigate("/");
   }

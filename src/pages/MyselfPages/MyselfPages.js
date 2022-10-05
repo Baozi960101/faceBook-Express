@@ -5,8 +5,8 @@ import {
   MEDIA_QUERY_Header_MB,
   MEDIA_QUERY_SideBar,
   MEDIA_QUERY,
-} from "../../constants/style";
-import { AuthContext } from "../../context/context";
+} from "../../global/style";
+import { AuthContext } from "../../global/context";
 
 const Box = styled.div`
   padding-top: 10px;
@@ -119,6 +119,12 @@ const DateTitle = styled.div`
   margin-right: 20px;
   font-size: 20px;
   color: ${({ theme }) => theme.color};
+
+
+  ${MEDIA_QUERY_Header_MB}{
+    font-size: 16px;
+  }
+
 `;
 
 const ValueInput = styled.input`

@@ -6,7 +6,7 @@ import {
   MEDIA_QUERY_Header_MB,
   MEDIA_QUERY_SideBar,
   MEDIA_QUERY
-} from "../../constants/style";
+} from "../../global/style";
 import edit from "../../image/edit.svg";
 import editDark from "../../image/editDark.svg";
 import photo from "../../image/photo.svg";
@@ -20,7 +20,7 @@ import crossDark from "../../image/crossDark.svg";
 import work01 from "../../image/work01.png";
 import work02 from "../../image/work02.png";
 import work03 from "../../image/work03.png";
-import { ThemeContext, AuthContext } from "../../context/context";
+import { ThemeContext, AuthContext } from "../../global/context";
 
 const Box = styled.div`
   padding-top: 10px;
@@ -378,6 +378,7 @@ const PostContentNiceChage = styled(PostContentNiceNumberImg)`
 `;
 
 export default function HomePages() {
+
   const [value, setValue] = useState("");
 
   const { user, setUser } = useContext(AuthContext);

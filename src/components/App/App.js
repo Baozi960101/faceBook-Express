@@ -9,8 +9,8 @@ import UpdatePages from "../../pages/UpdatePages";
 import MyselfPages from "../../pages/MyselfPages";
 import { ThemeProvider } from "styled-components";
 import { useState } from "react";
-import { ThemeContext, AuthContext } from "../../context/context";
-import { MEDIA_QUERY_Header_SMALL } from "../../constants/style";
+import { ThemeContext, AuthContext } from "../../global/context";
+import { MEDIA_QUERY_Header_SMALL } from "../../global/style";
 
 const theme = {
   light: {
@@ -56,13 +56,12 @@ const MainBox = styled.div`
 
 export default function App() {
   const [colorMode, setColorMode] = useState("light");
-  const [user, setUser] = useState(true);
+  const [user, setUser] = useState(false);
   const [searchLogo, setSearchLogo] = useState(true);
   const [menuChange, setMenuChange] = useState(false);
   const [setUpChange, setSetUpChange] = useState(false);
 
   const { pathname } = useLocation();
-
   console.log(pathname);
 
   function handleChangeModeLight(e) {
