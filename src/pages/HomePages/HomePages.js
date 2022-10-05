@@ -9,6 +9,7 @@ import {
 import edit from "../../image/edit.svg";
 import editDark from "../../image/editDark.svg";
 import photo from "../../image/photo.svg";
+import mail from "../../image/mail.svg";
 import niceImg from "../../image/nice.svg";
 import good from "../../image/good.svg";
 import noGood from "../../image/noGood.svg";
@@ -203,7 +204,7 @@ const PostMyselfUpload = styled.div`
   width: 100%;
   height: 50%;
   display: flex;
-  justify-content: flex-end;
+  justify-content: space-between;
   align-items: center;
 `;
 
@@ -235,7 +236,7 @@ const PostMyselfUploadContains = styled.div`
   }
 `;
 
-const PostMyself = ({ user }) => {
+const PostMyself = ({ user, value, handleValue, handleMessage }) => {
   return (
     <PostMyselfContains>
       <PostMyselfMain>
@@ -243,12 +244,20 @@ const PostMyself = ({ user }) => {
           <PostMyselfImg />
           User
         </PostMyselfLogo>
-        <PostMyselfInput placeholder={user + "，在想些甚麼 ?"} />
+        <PostMyselfInput
+          value={value}
+          onChange={handleValue}
+          placeholder={user + "，在想些甚麼 ?"}
+        />
       </PostMyselfMain>
       <PostMyselfUpload>
         <PostMyselfUploadContains>
           <PostMyselfUploadImg src={photo} />
           上傳相片
+        </PostMyselfUploadContains>
+        <PostMyselfUploadContains onClick={handleMessage}>
+          <PostMyselfUploadImg src={mail} />
+          送出
         </PostMyselfUploadContains>
       </PostMyselfUpload>
     </PostMyselfContains>
@@ -358,6 +367,8 @@ const PostContentNiceChage = styled(PostContentNiceNumberImg)`
 `;
 
 export default function HomePages() {
+  const [value, setValue] = useState("");
+
   const { user, setUser } = useContext(AuthContext);
 
   const { colorMode, returnClick } = useContext(ThemeContext);
@@ -416,14 +427,23 @@ export default function HomePages() {
           </PostContentNiceNumber>
           <PostContentNiceCheck onClick={niceClick}>
             <PostContentNiceChage
-              src={nice ? (colorMode === "light" ? noGood : noGoodDark) : good}
+              src={nice ? good : colorMode === "light" ? noGood : noGoodDark}
             />{" "}
-            {nice ? "讚" : "已讚"}
+            {nice ? "已讚" : "讚"}
           </PostContentNiceCheck>
         </PostContentNice>
       </PostContain>
     );
   };
+
+  function handlePostContent(e) {
+    setValue(e.target.value);
+  }
+
+  function handleMessageClick() {
+    setValue("");
+    console.log(value);
+  }
 
   return (
     <>
@@ -435,7 +455,12 @@ export default function HomePages() {
           <Dynamic src={work03} />
           <DynamicRWD src={work01} />
         </DynamicContain>
-        <PostMyself user="User" />
+        <PostMyself
+          value={value}
+          handleValue={handlePostContent}
+          handleMessage={handleMessageClick}
+          user="User"
+        />
         <Post
           colorMode={colorMode}
           user="User"

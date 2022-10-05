@@ -1,6 +1,8 @@
 import styled from "styled-components";
-import { MEDIA_QUERY_MB , MEDIA_QUERY_MIDD } from "../../constants/style";
+import { MEDIA_QUERY_MB, MEDIA_QUERY_MIDD } from "../../constants/style";
 import facebook from "../../image/facebook.svg";
+import cross from "../../image/cross.svg";
+import { useState } from "react";
 
 const Body = styled.div`
   width: 100%;
@@ -86,7 +88,7 @@ const LoginArea = styled.div`
   border-radius: 8px;
   box-shadow: 0 2px 4px rgb(0 0 0 / 10%), 0 8px 16px rgb(0 0 0 / 10%);
   margin: 80px 40px 20px 40px;
-  box-sizing:border-box;
+  box-sizing: border-box;
 
   ${MEDIA_QUERY_MB} {
     width: 400px;
@@ -122,24 +124,20 @@ const LoginButton = styled.button`
   cursor: pointer;
 `;
 
-const PasswordText = styled.a`
+const PasswordText = styled.div`
+  display: ${(props) => (props.active ? "block" : "none")};
   width: 100%;
   text-align: center;
   padding: 20px 0px 25px 0px;
   border-bottom: 1px solid #dddfe2;
 `;
 
-const ForgotPassword = styled.a`
-  color: #1877f2;
-  cursor: pointer;
+const ForgotPassword = styled.div`
+  color: red;
   text-decoration: none;
-
-  :hover {
-    text-decoration: underline;
-  }
 `;
 
-const CreateNew = styled.a`
+const CreateNew = styled.div`
   border: none;
   border-radius: 6px;
   font-size: 18px;
@@ -150,13 +148,14 @@ const CreateNew = styled.a`
   color: #fff;
   font-weight: 600;
   text-decoration: none;
+  cursor: pointer;
 `;
 
 const RemarkText = styled.div`
-  width:100%;
+  width: 100%;
   text-align: center;
   font-size: 14px;
-  box-sizing:box-sizing;
+  box-sizing: box-sizing;
 
   ${MEDIA_QUERY_MB} {
     width: 400px;
@@ -182,16 +181,29 @@ const Remark = () => {
   );
 };
 
-const Login = ({}) => {
+const Login = ({
+  username,
+  password,
+  handleUser,
+  handlePass,
+  login,
+  createNew,
+  active,
+}) => {
   return (
     <LoginArea>
-      <LoginInput placeholder="電子郵件地址或手機號碼" />
-      <LoginInput type="password" placeholder="密碼" />
-      <LoginButton>登入</LoginButton>
-      <PasswordText>
-        <ForgotPassword href="">忘記密碼 ?</ForgotPassword>
+      <LoginInput value={username} onChange={handleUser} placeholder="帳號" />
+      <LoginInput
+        value={password}
+        onChange={handlePass}
+        type="password"
+        placeholder="密碼"
+      />
+      <LoginButton onClick={login}>登入</LoginButton>
+      <PasswordText active={active}>
+        <ForgotPassword>登入失敗</ForgotPassword>
       </PasswordText>
-      <CreateNew href="">建立新帳號</CreateNew>
+      <CreateNew onClick={createNew}>建立新帳號</CreateNew>
     </LoginArea>
   );
 };
@@ -199,22 +211,22 @@ const Login = ({}) => {
 const FooterArea = styled.div`
   background-color: #ffffff;
   width: 100%;
-  padding: 10px 0;
+  padding: 30px 0;
   box-sizing: border-box;
 `;
 
 const FooterLinkArea = styled.div`
-  max-width:980px;
-  margin:auto;
+  max-width: 980px;
+  margin: auto;
 
   ${MEDIA_QUERY_MIDD} {
-    max-width:880px;
+    max-width: 880px;
   }
 
   ${MEDIA_QUERY_MB} {
-    padding:0 30px;
+    padding: 0 30px;
   }
-`
+`;
 
 const FooterLink = styled.a`
   padding: 0 6px;
@@ -262,13 +274,182 @@ const Footer = () => {
   );
 };
 
+const RegisterBody = styled.div`
+  display: ${(props) => (props.active ? "flex" : "none")};
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(252, 252, 253, 0.6);
+  position: fixed;
+  top: 0;
+`;
+
+const RegisterArea = styled.div`
+  width: 430px;
+  box-sizing: border-box;
+  border-radius: 10px;
+  background-color: white;
+  padding: 10px 15px 20px 15px;
+  box-shadow: 0 2px 4px rgb(0 0 0 / 10%), 0 8px 16px rgb(0 0 0 / 10%);
+`;
+
+const RegisterTitle = styled.div`
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  font-size: 30px;
+  font-weight: 600;
+  margin: 20px 0;
+`;
+
+const RegisterCross = styled.img`
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+`;
+
+const RegisterError = styled.div`
+  width: 100%;
+  display: ${(props) => (props.active ? "flex" : "none")};
+  justify-content: center;
+  font-size: 24px;
+  font-weight: 600;
+  color: red;
+  margin-top: 20px;
+`;
+
+const RegisterBtn = styled.div`
+  width: 120px;
+  text-align: center;
+  border: none;
+  border-radius: 6px;
+  font-size: 18px;
+  line-height: 48px;
+  background-color: #42b72a;
+  margin: 25px auto 0 auto;
+  color: #fff;
+  font-weight: 600;
+  text-decoration: none;
+  cursor: pointer;
+`;
+
+const Register = ({
+  close,
+  nickname,
+  handelNickname,
+  handelPassWord,
+  handelUsername,
+  active,
+  err,
+  login,
+}) => {
+  return (
+    <RegisterBody active={active}>
+      <RegisterArea>
+        <RegisterTitle>
+          <div>註冊</div>
+          <RegisterCross onClick={close} src={cross} />
+        </RegisterTitle>
+        <LoginInput
+          onChange={handelNickname}
+          value={nickname}
+          placeholder="設定暱稱"
+        />
+        <LoginInput onChange={handelUsername} placeholder="設定帳號" />
+        <LoginInput
+          onChange={handelPassWord}
+          type="password"
+          placeholder="設定密碼"
+        />
+        <RegisterError active={err}>請填完整</RegisterError>
+        <RegisterBtn onClick={login}>建立新帳號</RegisterBtn>
+      </RegisterArea>
+    </RegisterBody>
+  );
+};
+
 export default function LoginPages() {
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+
+  const [creatNickname, setCreatNickname] = useState("");
+  const [creatUsername, setCreatUsername] = useState("");
+  const [creatPassword, setCreatPassword] = useState("");
+
+  const [loginFail, setLoginFail] = useState(false);
+  const [errArea, setErrArea] = useState(false);
+
+  const [register, setRegister] = useState(false);
+
+  function handleUser(e) {
+    setUsername(e.target.value);
+  }
+
+  function handlePass(e) {
+    setPassword(e.target.value);
+  }
+
+  function handleRegister() {
+    setRegister(!register);
+  }
+
+  function handleRegisterNick(e) {
+    setErrArea(false);
+    setCreatNickname(e.target.value);
+  }
+
+  function handleRegisterUser(e) {
+    setErrArea(false);
+    setCreatUsername(e.target.value);
+  }
+
+  function handleRegisterPass(e) {
+    setErrArea(false);
+    setCreatPassword(e.target.value);
+  }
+
+  function handleLogin() {
+    if (username === "" || password === "") {
+      setLoginFail(true);
+      return;
+    }
+    setLoginFail(false);
+    console.log(username, password);
+  }
+
+  function handleRegisterLogin() {
+    if (creatNickname === "" || creatUsername === "" || creatPassword === "") {
+      setErrArea(true);
+      return;
+    }
+    console.log(creatNickname, creatUsername, creatPassword);
+  }
+
   return (
     <>
       <Body>
+        <Register
+          close={handleRegister}
+          active={register}
+          err={errArea}
+          login={handleRegisterLogin}
+          nickname={creatNickname}
+          handelNickname={handleRegisterNick}
+          handelUsername={handleRegisterUser}
+          handelPassWord={handleRegisterPass}
+        />
         <LogoArea />
         <div>
-          <Login />
+          <Login
+            username={username}
+            password={password}
+            handleUser={handleUser}
+            handlePass={handlePass}
+            createNew={handleRegister}
+            active={loginFail}
+            login={handleLogin}
+          />
           <Remark />
         </div>
       </Body>

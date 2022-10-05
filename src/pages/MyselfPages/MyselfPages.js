@@ -168,7 +168,7 @@ export default function MyselfPages() {
             </UpdateHeadContains>
           </UpdateHeadArea>
           <DateContent>
-            <DateTitle>姓名 :</DateTitle>
+            <DateTitle>暱稱 :</DateTitle>
             <ValueInput onChange={handleChangeUser} value={username} />
           </DateContent>
           <DateContent>
