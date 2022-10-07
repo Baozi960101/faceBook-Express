@@ -10,6 +10,7 @@ import { useState , useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../../global/context";
 import { createNewUserAPI , loginAPI } from "../../global/API";
+import { SetUserToken } from "../../global/utils";
 
 import Swal from "sweetalert2";
 
@@ -478,9 +479,8 @@ export default function LoginPages() {
         setLoginFail(true);
         return
       }
-      setUser(res)
-      console.log(res);
-      navigate("/");
+      setUser(res.user)
+      SetUserToken(res.token)
     })
   }
 
@@ -511,6 +511,9 @@ export default function LoginPages() {
       }
     });
   }
+
+
+  
 
   return (
     <>

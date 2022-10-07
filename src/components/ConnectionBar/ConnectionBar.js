@@ -1,14 +1,15 @@
 import { useContext } from "react";
 import styled from "styled-components";
 import {
-  BarList,
+  ConnectionMailBarList,
+  ConnectionPhoneBarList,
   PersonalBarList,
   Curve,
 } from "../../global/BarList";
 import datePhone from "../../image/datePhone.svg";
 import dateMail from "../../image/dateMail.svg";
 
-import { ThemeContext , AuthContext } from "../../global/context";
+import { AuthContext } from "../../global/context";
 
 import { MEDIA_QUERY_Header_MB , MEDIA_QUERY_SideBar , MEDIA_QUERY_Header_SMALL } from "../../global/style";
 
@@ -43,15 +44,15 @@ const Box = styled.div`
 
 
 export default function ConnectionBar() {
-  const { user, setUser } = useContext(AuthContext);
+  const { user } = useContext(AuthContext);
 
   return (
     <>
       <Area>
       <Box>
-        <PersonalBarList text="姓名" />
-        <BarList src={datePhone} text="0978026876" />
-        <BarList src={dateMail} text="Baozi960101@gmail.com" />
+        <PersonalBarList text={user.nickName} />
+        <ConnectionPhoneBarList src={datePhone} text={user.phone} />
+        <ConnectionMailBarList  src={dateMail} text={user.email} />
         <Curve />
       </Box>
       </Area>

@@ -1,11 +1,11 @@
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import {
   MEDIA_QUERY_Header_SMALL,
   MEDIA_QUERY_Header_MB,
   MEDIA_QUERY_SideBar,
-  MEDIA_QUERY
+  MEDIA_QUERY,
 } from "../../global/style";
 import edit from "../../image/edit.svg";
 import editDark from "../../image/editDark.svg";
@@ -21,6 +21,12 @@ import work01 from "../../image/work01.png";
 import work02 from "../../image/work02.png";
 import work03 from "../../image/work03.png";
 import { ThemeContext, AuthContext } from "../../global/context";
+import {
+  postArticleAPI,
+  allPostApi,
+  handleDeletePostApi,
+} from "../../global/API";
+import Swal from "sweetalert2";
 
 const Box = styled.div`
   padding-top: 10px;
@@ -48,9 +54,9 @@ const Box = styled.div`
     max-width: 680px;
   }
 
-  ${MEDIA_QUERY}{
-    padding-top:40px;
-    width:95%;
+  ${MEDIA_QUERY} {
+    padding-top: 40px;
+    width: 95%;
     margin: auto;
   }
 `;
@@ -61,8 +67,8 @@ const DynamicContain = styled.div`
   display: flex;
   justify-content: space-between;
 
-  ${MEDIA_QUERY}{
-    display:none;
+  ${MEDIA_QUERY} {
+    display: none;
   }
 `;
 
@@ -378,24 +384,33 @@ const PostContentNiceChage = styled(PostContentNiceNumberImg)`
 `;
 
 export default function HomePages() {
-
   const [value, setValue] = useState("");
+
+  const [allPost, setAllPost] = useState([]);
 
   const { user, setUser } = useContext(AuthContext);
 
-  const { colorMode, returnClick } = useContext(ThemeContext);
+  const { colorMode } = useContext(ThemeContext);
+
+  useEffect(() => {
+    allPostApi().then((res) => {
+      setAllPost(res.result);
+    });
+  }, []);
 
   const navigate = useNavigate();
 
   const Post = ({
-    colorMode,
     user,
+    id,
+    colorMode,
+    head,
     title,
     dete,
     content,
     src,
     goodNumber,
-    onClickDelete,
+    articleId,
   }) => {
     const [nice, setNice] = useState(false);
 
@@ -403,32 +418,49 @@ export default function HomePages() {
       setNice(!nice);
     }
 
-    function handleUpdatePost() {
-      navigate("/update");
+    function handleUpdatePost(id) {
+      navigate(`/update/${id}`);
+    }
+
+    async function handleDeletePost() {
+      handleDeletePostApi(user.id, articleId);
+      Swal.fire({
+        icon: "success",
+        title: "刪除成功",
+        confirmButtonColor: "#1877F2",
+      }).then(() => {
+        allPostApi().then((res) => {
+          setAllPost(res.result);
+        });
+      });
     }
 
     return (
-      <PostContain>
+      <PostContain id={id}>
         <PostAuthContain>
           <PostMyselfLogo>
             <PostMyselfImg />
-            {user}
+            {head}
           </PostMyselfLogo>
           <PostAuthDataContain>
             <PostAuthData>
               <PostAuthTitle>{title}</PostAuthTitle>
               <PostAuthDete>{dete}</PostAuthDete>
             </PostAuthData>
-            <div style={{ display: "flex" }}>
-              <PostBtn
-                onClick={handleUpdatePost}
-                src={colorMode === "light" ? edit : editDark}
-              />
-              <PostBtn
-                onClick={onClickDelete}
-                src={colorMode === "light" ? cross : crossDark}
-              />
-            </div>
+            {user.id === parseInt(id) && (
+              <div style={{ display: "flex" }}>
+                <PostBtn
+                  onClick={() => {
+                    handleUpdatePost(articleId);
+                  }}
+                  src={colorMode === "light" ? edit : editDark}
+                />
+                <PostBtn
+                  onClick={handleDeletePost}
+                  src={colorMode === "light" ? cross : crossDark}
+                />
+              </div>
+            )}
           </PostAuthDataContain>
         </PostAuthContain>
         <PostContentContain>{content}</PostContentContain>
@@ -452,9 +484,18 @@ export default function HomePages() {
     setValue(e.target.value);
   }
 
-  function handleMessageClick() {
+  function handlePostArticle() {
     setValue("");
-    console.log(value);
+    postArticleAPI(user.id, value);
+    Swal.fire({
+      icon: "success",
+      title: "發文成功",
+      confirmButtonColor: "#1877F2",
+    }).then(() => {
+      allPostApi().then((res) => {
+        setAllPost(res.result);
+      });
+    });
   }
 
   return (
@@ -470,10 +511,21 @@ export default function HomePages() {
         <PostMyself
           value={value}
           handleValue={handlePostContent}
-          handleMessage={handleMessageClick}
+          handleMessage={handlePostArticle}
           user="User"
         />
         <Post
+          id="8"
+          colorMode={colorMode}
+          user={user}
+          title="奇摩"
+          dete="2011-11-11"
+          content="我好帥"
+          src={work02}
+          goodNumber="777"
+        />
+        <Post
+          id="4"
           colorMode={colorMode}
           user="User"
           title="奇摩"
@@ -483,6 +535,7 @@ export default function HomePages() {
           goodNumber="777"
         />
         <Post
+          id="4"
           colorMode={colorMode}
           user="User"
           title="奇摩"
@@ -491,15 +544,24 @@ export default function HomePages() {
           src={work02}
           goodNumber="777"
         />
-        <Post
-          colorMode={colorMode}
-          user="User"
-          title="奇摩"
-          dete="2011-11-11"
-          content="我好帥"
-          src={work02}
-          goodNumber="777"
-        />
+        {allPost.length !== 0 &&
+          allPost.map((date) => {
+            return (
+              <Post
+                user={user}
+                key={date.id}
+                id={date.UserId}
+                colorMode={colorMode}
+                head={date.User.img}
+                title={date.User.nickName}
+                articleId={date.id}
+                dete={new Date(date.createdAt).toLocaleDateString()}
+                content={date.content}
+                src={work02}
+                goodNumber={date.awesomel}
+              />
+            );
+          })}
       </Box>
     </>
   );

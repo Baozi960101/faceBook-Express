@@ -6,7 +6,11 @@ import {
   MEDIA_QUERY_SideBar,
   MEDIA_QUERY,
 } from "../../global/style";
-import { AuthContext } from "../../global/context";
+import { AuthContext,ThemeContext } from "../../global/context";
+import { useNavigate } from "react-router-dom";
+import { upDateMyselfDataAPI } from "../../global/API";
+import { SetUserToken } from "../../global/utils";
+import Swal from "sweetalert2";
 
 const Box = styled.div`
   padding-top: 10px;
@@ -120,11 +124,9 @@ const DateTitle = styled.div`
   font-size: 20px;
   color: ${({ theme }) => theme.color};
 
-
-  ${MEDIA_QUERY_Header_MB}{
+  ${MEDIA_QUERY_Header_MB} {
     font-size: 16px;
   }
-
 `;
 
 const ValueInput = styled.input`
@@ -157,21 +159,24 @@ const ErrMessage = styled.div`
 `;
 
 export default function MyselfPages() {
-  const { user, setUser } = useContext(AuthContext);
+  const { user , setUser } = useContext(AuthContext);
+  const { returnClick } = useContext(ThemeContext);
 
-  const [nickname, setNickname] = useState(null);
+  const [nickName, setNickName] = useState(user.nickName);
   const [pass, setPass] = useState(null);
   const [passAgain, setPassAgain] = useState(null);
-  const [phone, setPhone] = useState(null);
-  const [mail, setMail] = useState(null);
+  const [phone, setPhone] = useState(user.phone);
+  const [mail, setMail] = useState(user.email);
 
-  const [img, setImg] = useState("");
+  const [img, setImg] = useState(user.img);
 
   const [passErr, setPassErr] = useState(false);
   const [myDataErr, setMyDataErr] = useState(false);
 
+  const navigate = useNavigate();
+
   function handleChangeNick(e) {
-    setNickname(e.target.value);
+    setNickName(e.target.value);
   }
 
   function handleChangePass(e) {
@@ -195,20 +200,39 @@ export default function MyselfPages() {
   }
 
   function upDatePassword() {
-    if (pass === passAgain) {
-      console.log(pass, "送出");
+    if (pass !== passAgain || pass === null) {
       setPassErr(true);
+      return;
     }
     setPassErr(false);
-    return;
+    upDateMyselfDataAPI(user.id,pass);
+    Swal.fire({
+      icon: "success",
+      title: "修改成功，請重新登入",
+      confirmButtonColor: "#1877F2",
+    });
+    returnClick()
+    setUser(false);
+    SetUserToken()
+    navigate("/");
   }
 
   function upDateMyself() {
-    if (nickname === "") {
+    if (nickName === "" || nickName === null) {
       setMyDataErr(true);
+      return;
     }
     setMyDataErr(false);
-    console.log(nickname, phone, mail);
+    upDateMyselfDataAPI(user.id,nickName, phone, mail);
+    Swal.fire({
+      icon: "success",
+      title: "修改成功，請重新登入",
+      confirmButtonColor: "#1877F2",
+    });
+    returnClick()
+    setUser(false);
+    SetUserToken()
+    navigate("/");
   }
 
   return (
@@ -249,7 +273,7 @@ export default function MyselfPages() {
             <ValueInput
               placeholder="必填"
               onChange={handleChangeNick}
-              value={nickname}
+              value={nickName}
             />
           </DateContent>
           <DateContent>

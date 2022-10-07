@@ -4,7 +4,7 @@ import arrowDownDark from "../image/arrowDownDark.svg";
 import arrowUp from "../image/arrowUp.svg";
 import arrowUpDark from "../image/arrowUpDark.svg";
 
-const BarListContains = styled.div`
+const BarListContains = styled.a`
   width: 95%;
   height: 50px;
   padding: 0 8px;
@@ -16,13 +16,14 @@ const BarListContains = styled.div`
   font-weight: 600;
   color: ${({ theme }) => theme.color};
   cursor: pointer;
+  text-decoration:none;
 
   :hover {
     background-color: ${({ theme }) => theme.headerHoverColor};
   }
 `;
 
-const HideBarListContains = styled.div`
+const HideBarListContains = styled.a`
   width: 95%;
   height: ${(props) => (props.active ? "50px" : "0px")};
   padding: 0 8px;
@@ -36,6 +37,7 @@ const HideBarListContains = styled.div`
   cursor: pointer;
   overflow: hidden;
   transition: height 0.2s ease-in-out;
+  text-decoration:none;
 
   :hover {
     background-color: ${({ theme }) => theme.headerHoverColor};
@@ -99,7 +101,25 @@ export const Curve = styled.div`
 
 export const BarList = ({ text, src, onClick }) => {
   return (
+    <BarListContains href="https://www.facebook.com/" onClick={onClick}>
+      <BarListIcon src={src} />
+      {text}
+    </BarListContains>
+  );
+};
+
+export const ConnectionPhoneBarList = ({ text, src, onClick,}) => {
+  return (
     <BarListContains onClick={onClick}>
+      <BarListIcon src={src} />
+      {text}
+    </BarListContains>
+  );
+};
+
+export const ConnectionMailBarList = ({ text, src, onClick,}) => {
+  return (
+    <BarListContains href={"mailto:"+ text} onClick={onClick}>
       <BarListIcon src={src} />
       {text}
     </BarListContains>
@@ -109,7 +129,7 @@ export const BarList = ({ text, src, onClick }) => {
 
 export const HideBarList = ({ active, text, src, onClick }) => {
   return (
-    <HideBarListContains active={active} onClick={onClick}>
+    <HideBarListContains href="https://www.facebook.com/" active={active} onClick={onClick}>
       <BarListIcon src={src} />
       {text}
     </HideBarListContains>
@@ -118,7 +138,7 @@ export const HideBarList = ({ active, text, src, onClick }) => {
 
 export const PersonalBarList = ({ text, src, onClick }) => {
   return (
-    <BarListContains onClick={onClick}>
+    <BarListContains  onClick={onClick}>
       <PersonalBarListArea>
         <PersonalBarListImg src={src} />
       </PersonalBarListArea>

@@ -102,7 +102,7 @@ box-sizing: border-box;
 
 
 export default function Sidebar() {
-  const { user, setUser } = useContext(AuthContext);
+  const { user } = useContext(AuthContext);
 
   const { colorMode } = useContext(ThemeContext);
 
@@ -116,7 +116,7 @@ export default function Sidebar() {
     <>
       <Area>
       <Box>
-        <PersonalBarList text="User" />
+        <PersonalBarList text={user.nickName} />
         <BarList src={sidebar_user} text="朋友" />
         <BarList src={sidebar_society} text="社群 ( 社團 )" />
         <BarList src={sidebar_marketplace} text="Marketplace" />

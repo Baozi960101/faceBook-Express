@@ -41,6 +41,7 @@ import {
   MEDIA_QUERY_Header_MIDD,
   MEDIA_QUERY,
 } from "../../global/style";
+import { SetUserToken } from "../../global/utils";
 
 const Box = styled.div`
   display: flex;
@@ -79,8 +80,9 @@ const SearchArea = styled.div`
     width: 200px;
   }
 `;
-const SearchLogo = styled.a`
+const SearchLogo = styled.div`
   width: 40px;
+  cursor:pointer;
 `;
 
 const ReturnLogo = styled.img`
@@ -141,11 +143,11 @@ const RWDMenu = ({ onClick, width, img }) => {
   );
 };
 
-const Search = ({ searchLogo, returnClick, searchClick, onClick }) => {
+const Search = ({ backHome,searchLogo, returnClick, searchClick, onClick }) => {
   return (
     <SearchArea>
       {searchLogo ? (
-        <SearchLogo href="/">
+        <SearchLogo onClick={backHome}>
           <SearchSvg src={facebookLogo} />
         </SearchLogo>
       ) : (
@@ -159,7 +161,7 @@ const Search = ({ searchLogo, returnClick, searchClick, onClick }) => {
           placeholder="搜尋 Facebook"
         ></SearchInput>
       </SearchInputArea>
-      <RWDMenu onClick={onClick} img={menu} width="25px" />
+      {/* <RWDMenu onClick={onClick} img={menu} width="25px" /> */}
     </SearchArea>
   );
 };
@@ -170,8 +172,7 @@ const ClassificationArea = styled.div`
   margin-right: 100px;
 
   ${MEDIA_QUERY_Header_MB} {
-    margin-right: 0px;
-    margin-left: 98px;
+    margin:0px;
   }
 `;
 
@@ -290,7 +291,7 @@ const PersonalInformationArea = styled.div`
   }
 `;
 
-const PersonalInformationList = styled.div`
+const PersonalInformationList = styled.a`
   display: flex;
   justify-content: center;
   align-items: center;
@@ -316,21 +317,21 @@ const PersonalInformation = ({ onclick, colorMode }) => {
   return (
     <PersonalInformationArea>
       <PersonalInformationListRWD>
-        <PersonalInformationList>
+        <PersonalInformationList href="https://www.facebook.com/">
           <PersonalInformationLogo
             src={colorMode === "light" ? grid : gridDark}
           />
         </PersonalInformationList>
       </PersonalInformationListRWD>
       <PersonalInformationListRWD>
-        <PersonalInformationList>
+        <PersonalInformationList href="https://www.messenger.com/">
           <PersonalInformationLogo
             src={colorMode === "light" ? message : messageDark}
           />
         </PersonalInformationList>
       </PersonalInformationListRWD>
       <PersonalInformationListRWD>
-        <PersonalInformationList>
+        <PersonalInformationList href="https://www.facebook.com/">
           <PersonalInformationLogo
             src={colorMode === "light" ? bell : bellDark}
           />
@@ -558,6 +559,11 @@ export default function Header() {
   const { pathname } = useLocation();
   const navigate = useNavigate();
 
+
+  function toHome() {
+    navigate("/")
+  }
+
   function handleChangeMyselfData() {
     navigate("/myself");
   }
@@ -565,10 +571,11 @@ export default function Header() {
   function logOutClick() {
     returnClick()
     setUser(false);
+    SetUserToken()
     navigate("/");
   }
 
-  const Classification = ({ href, clickImg, img, text, width }) => {
+  const Classification = ({ toHome,href, clickImg, img, text, width }) => {
     const [classificationClick, setClassificationClick] = useState(false);
 
     function MouseOverClassificationClick() {
@@ -581,6 +588,7 @@ export default function Header() {
 
     return (
       <ClassificationContains
+        onClick={toHome}
         action={pathname === href}
         href={href}
         onMouseOver={MouseOverClassificationClick}
@@ -636,6 +644,7 @@ export default function Header() {
         }}
       >
         <Search
+          backHome={toHome}
           searchLogo={searchLogo}
           returnClick={returnClick}
           searchClick={searchClick}
@@ -649,28 +658,28 @@ export default function Header() {
             text="首頁"
           />
           <Classification
-            href="/watch"
+            href="https://zh-tw.facebook.com/watch/"
             img={colorMode === "light" ? watch : watchDark}
             clickImg={watch}
             text="Watch"
             width="35px"
           />
           <Classification
-            href="/marketplace"
+            href="https://zh-tw.facebook.com/"
             img={colorMode === "light" ? market : marketDark}
             clickImg={market}
             text="Marketplace"
             width="35px"
           />
           <Classification
-            href="/community"
+            href="https://zh-tw.facebook.com/"
             img={colorMode === "light" ? community : communityDark}
             clickImg={community}
             text="社群"
             width="35px"
           />
           <Classification
-            href="/game"
+            href="https://www.facebook.com/games/"
             img={colorMode === "light" ? puzzle : puzzleDark}
             clickImg={puzzle}
             text="遊戲"
@@ -697,7 +706,7 @@ export default function Header() {
                 <PersonalInformationList style={{ marginRight: "10px" }}>
                   User
                 </PersonalInformationList>
-                User
+                {user.nickName}
               </SetUpMyselfName>
             </SetUpMyself>
             <SetUpList

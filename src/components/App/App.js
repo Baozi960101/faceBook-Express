@@ -1,4 +1,4 @@
-import { Routes, Route, useLocation } from "react-router-dom";
+import { Routes, Route, useLocation,useParams } from "react-router-dom";
 import styled from "styled-components";
 import Header from "../Header";
 import Sidebar from "../Sidebar";
@@ -8,9 +8,12 @@ import HomePages from "../../pages/HomePages";
 import UpdatePages from "../../pages/UpdatePages";
 import MyselfPages from "../../pages/MyselfPages";
 import { ThemeProvider } from "styled-components";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { ThemeContext, AuthContext } from "../../global/context";
 import { MEDIA_QUERY_Header_SMALL } from "../../global/style";
+import { hangleColorModeAPI } from "../../global/API";
+import { GetUserToken } from "../../global/utils";
+
 
 const theme = {
   light: {
@@ -56,21 +59,38 @@ const MainBox = styled.div`
 
 export default function App() {
   const [colorMode, setColorMode] = useState("light");
-  const [user, setUser] = useState(false);
+  const [user, setUser] = useState(true);
   const [searchLogo, setSearchLogo] = useState(true);
   const [menuChange, setMenuChange] = useState(false);
   const [setUpChange, setSetUpChange] = useState(false);
 
-  const { pathname } = useLocation();
-  console.log(pathname);
+  useEffect(()=>{
+    if (!GetUserToken()) {
+      return
+    }
+    // checkLoginAPI(GetUserToken()).then((res)=>{
+    //   setUser(res.user)
+    // })
+  },[])
+
+  useEffect(()=>{
+    if (user.colorMode === "dark") {
+      setColorMode("dark");
+    } else {
+      setColorMode("light");
+    }
+  },[user])
+
 
   function handleChangeModeLight(e) {
     e.stopPropagation();
+    hangleColorModeAPI(user.id,"light")
     setColorMode("light");
   }
 
   function handleChangeModeDark(e) {
     e.stopPropagation();
+    hangleColorModeAPI(user.id,"dark")
     setColorMode("dark");
   }
 
@@ -126,7 +146,7 @@ export default function App() {
                 <Route path="/" element={user && <HomePages />} />
               </Routes>
               <Routes>
-                <Route path="/update" element={user && <UpdatePages />} />
+                <Route path="/update/:id" element={user && <UpdatePages />} />
               </Routes>
               <Routes>
                 <Route path="/myself" element={user && <MyselfPages />} />

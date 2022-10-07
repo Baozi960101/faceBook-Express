@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import {
   MEDIA_QUERY_Header_SMALL,
   MEDIA_QUERY_Header_MB,
@@ -8,6 +8,9 @@ import {
 } from "../../global/style";
 import work02 from "../../image/work02.png";
 import { ThemeContext, AuthContext } from "../../global/context";
+import { useParams } from "react-router-dom";
+import { singlePostApi,handleSinglePostApi } from "../../global/API";
+import { useNavigate } from "react-router-dom";
 
 const Box = styled.div`
   padding-top: 10px;
@@ -68,10 +71,11 @@ const PostUpdateTitle = styled.div`
   text-align:center;
 `;
 
-const PostContentUpdate = styled.textarea`
+const PostContentUpdate = styled.input`
   width: 90%;
   box-sizing: border-box;
-  padding: 15px 18px;
+  height:100px;
+  padding: 0px 18px;
   color: ${({ theme }) => theme.color};
   background-color:${({ theme }) => theme.headerHoverColor};
   font-size: 16px;
@@ -107,8 +111,19 @@ export default function UpdatePages() {
 
   const { colorMode } = useContext(ThemeContext);
 
-  const [value, setValue] = useState(656565656);
-  const [img, setImg] = useState("");
+  const [value, setValue] = useState("");
+  const [img, setImg] = useState();
+  const navigate = useNavigate()
+
+  let { id } = useParams();
+
+  useEffect(()=>{
+    singlePostApi(id).then((res)=>{
+      setValue(res.result.content)
+      setImg(res.result.img)
+    })
+  },[id])
+
 
   function handleChangeValue(e) {
     setValue(e.target.value);
@@ -118,16 +133,21 @@ export default function UpdatePages() {
     setImg(e.target.value);
   }
 
+  function handleNewPost() {
+    handleSinglePostApi(user.id,id,value)
+    navigate("/")
+  }
+
   return (
     <>
       <Box>
         <PostContain>
           <PostUpdateTitle>編輯文章</PostUpdateTitle>
-          <PostContentUpdate onChange={handleChangeValue} rows={5}>{value}</PostContentUpdate>
+          <PostContentUpdate value={value} onChange={handleChangeValue}></PostContentUpdate>
           <PostUpdateImgDiv>
             <PostContentImg src={work02} />
           </PostUpdateImgDiv>
-          <PostUpdateBtn>送出</PostUpdateBtn>
+          <PostUpdateBtn onClick={handleNewPost}>送出</PostUpdateBtn>
         </PostContain>
       </Box>
     </>
