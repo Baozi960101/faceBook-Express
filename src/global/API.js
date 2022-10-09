@@ -48,8 +48,9 @@ export function loginAPI(
     })
     .then(res => res.json());
   }
+
   
-  export function postArticleAPI( UserId, content ) {
+  export function postArticleAPI( UserId, content, img ) {
     return fetch("/article", {
       method: "POST",
       headers: {
@@ -57,7 +58,8 @@ export function loginAPI(
       },
       body: JSON.stringify({
         UserId,
-        content
+        content,
+        img
       }),
     })
     .then(res => res.json());
@@ -77,7 +79,7 @@ export function loginAPI(
     .then(res => res.json());
   }
 
-  export function upDateMyselfDataAPI(id,nickName,phone,email) {
+  export function upDateMyselfDataAPI(id,nickName,phone,email,img) {
     return fetch("/upDateMyselfData", {
       method: "POST",
       headers: {
@@ -87,7 +89,8 @@ export function loginAPI(
         id,
         nickName,
         phone,
-        email
+        email,
+        img
       }),
     })
     .then(res => res.json());
@@ -117,7 +120,7 @@ export function loginAPI(
   }
 
 
-  export function handleSinglePostApi(UserId,id,content) {
+  export function handleSinglePostApi(UserId,id,content,img) {
     return fetch(`/update/${id}`,{
       method: "POST",
       headers: {
@@ -126,7 +129,8 @@ export function loginAPI(
       body: JSON.stringify({
         UserId,
         id,
-        content
+        content,
+        img
       }),
     })
   }

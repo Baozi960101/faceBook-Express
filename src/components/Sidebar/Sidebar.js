@@ -116,7 +116,7 @@ export default function Sidebar() {
     <>
       <Area>
       <Box>
-        <PersonalBarList text={user.nickName} />
+        <PersonalBarList src={user.img} text={user.nickName} />
         <BarList src={sidebar_user} text="朋友" />
         <BarList src={sidebar_society} text="社群 ( 社團 )" />
         <BarList src={sidebar_marketplace} text="Marketplace" />

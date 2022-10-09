@@ -25,7 +25,7 @@ module.exports = {
         type: Sequelize.STRING
       },
       img: {
-        type: Sequelize.STRING
+        type: Sequelize.TEXT
       },
       colorMode: {
         type: Sequelize.STRING

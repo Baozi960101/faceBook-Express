@@ -1,4 +1,4 @@
-import { Routes, Route, useLocation,useParams } from "react-router-dom";
+import { Routes, Route, useLocation, useParams } from "react-router-dom";
 import styled from "styled-components";
 import Header from "../Header";
 import Sidebar from "../Sidebar";
@@ -13,6 +13,7 @@ import { ThemeContext, AuthContext } from "../../global/context";
 import { MEDIA_QUERY_Header_SMALL } from "../../global/style";
 import { hangleColorModeAPI } from "../../global/API";
 import { GetUserToken } from "../../global/utils";
+import { checkLoginAPI } from "../../global/API";
 
 
 const theme = {
@@ -57,6 +58,7 @@ const MainBox = styled.div`
   }
 `;
 
+
 export default function App() {
   const [colorMode, setColorMode] = useState("light");
   const [user, setUser] = useState(true);
@@ -64,33 +66,32 @@ export default function App() {
   const [menuChange, setMenuChange] = useState(false);
   const [setUpChange, setSetUpChange] = useState(false);
 
-  useEffect(()=>{
+  useEffect(() => {
     if (!GetUserToken()) {
-      return
+      return;
     }
     // checkLoginAPI(GetUserToken()).then((res)=>{
     //   setUser(res.user)
     // })
-  },[])
+  }, []);
 
-  useEffect(()=>{
+  useEffect(() => {
     if (user.colorMode === "dark") {
       setColorMode("dark");
     } else {
       setColorMode("light");
     }
-  },[user])
-
+  }, [user]);
 
   function handleChangeModeLight(e) {
     e.stopPropagation();
-    hangleColorModeAPI(user.id,"light")
+    hangleColorModeAPI(user.id, "light");
     setColorMode("light");
   }
 
   function handleChangeModeDark(e) {
     e.stopPropagation();
-    hangleColorModeAPI(user.id,"dark")
+    hangleColorModeAPI(user.id, "dark");
     setColorMode("dark");
   }
 

@@ -13,7 +13,8 @@ const usersController = {
       include:{
         model:User,
         attributes:['nickName',"img"]
-      }
+      },
+      order: [['createdAt', 'DESC']]
     }).then((result)=>{
       return res.json({result})
     })
@@ -80,7 +81,7 @@ const usersController = {
             nickName: dete.nickName,
             phone: dete.phone,
             email: dete.email,
-            imh: dete.img,
+            img: dete.img,
             colorMode: dete.colorMode,
           },
           token,
@@ -114,7 +115,7 @@ const usersController = {
           nickName: dete.nickName,
           phone: dete.phone,
           email: dete.email,
-          imh: dete.img,
+          img: dete.img,
           colorMode: dete.colorMode,
         },
         token,
@@ -136,12 +137,13 @@ const usersController = {
     );
   },
   upDateMyselfData: (req) => {
-    const { id, nickname, phone, email } = req.body;
+    const { id, nickname, phone, email,img } = req.body;
     User.update(
       {
         nickname,
         phone,
         email,
+        img
       },
       {
         where: {

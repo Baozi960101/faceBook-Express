@@ -50,7 +50,7 @@ export default function ConnectionBar() {
     <>
       <Area>
       <Box>
-        <PersonalBarList text={user.nickName} />
+        <PersonalBarList src={user.img} text={user.nickName} />
         <ConnectionPhoneBarList src={datePhone} text={user.phone} />
         <ConnectionMailBarList  src={dateMail} text={user.email} />
         <Curve />

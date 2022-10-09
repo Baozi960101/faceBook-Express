@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/alt-text */
 import styled from "styled-components";
 import { useContext, useState } from "react";
 import {
@@ -6,11 +7,12 @@ import {
   MEDIA_QUERY_SideBar,
   MEDIA_QUERY,
 } from "../../global/style";
-import { AuthContext,ThemeContext } from "../../global/context";
+import { AuthContext, ThemeContext } from "../../global/context";
 import { useNavigate } from "react-router-dom";
-import { upDateMyselfDataAPI } from "../../global/API";
+import { upDateMyselfDataAPI, upDateMyselfPassAPI } from "../../global/API";
 import { SetUserToken } from "../../global/utils";
 import Swal from "sweetalert2";
+import photo from "../../image/photo.svg";
 
 const Box = styled.div`
   padding-top: 10px;
@@ -18,7 +20,7 @@ const Box = styled.div`
   color: ${({ theme }) => theme.color};
   width: 680px;
   display: flex;
-  height: calc(100vh - 55px);
+  height: auto;
   flex-direction: column;
   box-sizing: border-box;
   margin: 0 20px;
@@ -80,6 +82,9 @@ const UpdateHeadArea = styled.div`
 `;
 
 const UpdateHeadContains = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
   width: 60px;
   height: 60px;
   overflow: hidden;
@@ -89,7 +94,6 @@ const UpdateHeadContains = styled.div`
 
 const UpdateHead = styled.img`
   max-height: 100%;
-  cursor: pointer;
 `;
 
 const Btn = styled.button`
@@ -112,10 +116,7 @@ const DateContent = styled.div`
   display: flex;
   align-items: center;
   box-sizing: border-box;
-
-  & + & {
-    margin-top: 20px;
-  }
+  margin-top: 20px;
 `;
 
 const DateTitle = styled.div`
@@ -158,8 +159,55 @@ const ErrMessage = styled.div`
   display: ${(props) => (props.active ? "block" : "none")};
 `;
 
+const PostMyselfUpload = styled.div`
+  width: 100%;
+  height: 50%;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  margin-top: 5px;
+`;
+
+const PostMyselfUploadContains = styled.div`
+  width: 33%;
+  height: 25px;
+  padding: 8px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-sizing: box-sizing;
+  border-radius: 10px;
+  cursor: pointer;
+  font-weight: 600;
+  color: ${({ theme }) => theme.color};
+
+  position: relative;
+
+  :hover {
+    background-color: ${({ theme }) => theme.headerHoverColor};
+  }
+`;
+
+const PostMyselfUploadImg = styled.img`
+  width: 30px;
+  height: 30px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-right: 5px;
+  margin-top: 1px;
+`;
+
+const UploadImgBtn = styled.input`
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  cursor: pointer;
+  opacity: 0;
+`;
+
 export default function MyselfPages() {
-  const { user , setUser } = useContext(AuthContext);
+  const { user, setUser } = useContext(AuthContext);
   const { returnClick } = useContext(ThemeContext);
 
   const [nickName, setNickName] = useState(user.nickName);
@@ -168,7 +216,7 @@ export default function MyselfPages() {
   const [phone, setPhone] = useState(user.phone);
   const [mail, setMail] = useState(user.email);
 
-  const [img, setImg] = useState(user.img);
+  const [imageValue, setImageValue] = useState(user.img);
 
   const [passErr, setPassErr] = useState(false);
   const [myDataErr, setMyDataErr] = useState(false);
@@ -195,25 +243,22 @@ export default function MyselfPages() {
     setMail(e.target.value);
   }
 
-  function handleChangeImg(e) {
-    setImg(e.target.value);
-  }
-
   function upDatePassword() {
     if (pass !== passAgain || pass === null) {
       setPassErr(true);
       return;
     }
+    console.log(pass, passAgain);
     setPassErr(false);
-    upDateMyselfDataAPI(user.id,pass);
+    upDateMyselfPassAPI(user.id, pass);
     Swal.fire({
       icon: "success",
       title: "修改成功，請重新登入",
       confirmButtonColor: "#1877F2",
     });
-    returnClick()
+    returnClick();
     setUser(false);
-    SetUserToken()
+    SetUserToken();
     navigate("/");
   }
 
@@ -223,17 +268,33 @@ export default function MyselfPages() {
       return;
     }
     setMyDataErr(false);
-    upDateMyselfDataAPI(user.id,nickName, phone, mail);
+    upDateMyselfDataAPI(user.id, nickName, phone, mail, imageValue);
     Swal.fire({
       icon: "success",
       title: "修改成功，請重新登入",
       confirmButtonColor: "#1877F2",
     });
-    returnClick()
+    returnClick();
     setUser(false);
-    SetUserToken()
+    SetUserToken();
     navigate("/");
   }
+
+  const handleOnChange = (e) => {
+    const file = e.target.files[0];
+    const reader = new FileReader();
+    reader.addEventListener(
+      "load",
+      function () {
+        // convert image file to base64 string
+        setImageValue(reader.result);
+      },
+      false
+    );
+    if (file) {
+      reader.readAsDataURL(file);
+    }
+  };
 
   return (
     <>
@@ -265,9 +326,39 @@ export default function MyselfPages() {
           <PostUpdateTitle>更改個人資料</PostUpdateTitle>
           <UpdateHeadArea>
             <UpdateHeadContains>
-              <UpdateHead src="" />
+              <UpdateHead src={user.img} />
             </UpdateHeadContains>
           </UpdateHeadArea>
+          <div
+            style={{
+              width: "100%",
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
+            <img style={{ maxWidth: "50%" }} src={imageValue} />
+          </div>
+
+          <PostMyselfUpload>
+            <PostMyselfUploadContains>
+              <PostMyselfUploadImg src={photo} />
+              <UploadImgBtn
+                type="file"
+                onChange={handleOnChange}
+              ></UploadImgBtn>
+              上傳圖片
+            </PostMyselfUploadContains>
+            {imageValue && (
+              <PostMyselfUploadContains
+                onClick={() => {
+                  setImageValue(null);
+                }}
+              >
+                清除圖片
+              </PostMyselfUploadContains>
+            )}
+          </PostMyselfUpload>
           <DateContent>
             <DateTitle>暱稱 :</DateTitle>
             <ValueInput

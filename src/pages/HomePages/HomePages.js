@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/alt-text */
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 import { useContext, useEffect, useState } from "react";
@@ -60,6 +61,16 @@ const Box = styled.div`
     margin: auto;
   }
 `;
+
+const LoadArea = styled.div`
+  background-color: ${({ theme }) => theme.bodyBackGroundColor};
+  width:690px;
+  height:100vh;
+  position:fixed;
+  top:56px;
+  z-index:1;
+  display:${props => props.active ? "flex" : "none"};
+`
 
 const DynamicContain = styled.div`
   width: 100%;
@@ -162,8 +173,7 @@ const DynamicRWD = ({ src }) => {
 
 const PostMyselfContains = styled.div`
   width: 100%;
-  height: 123px;
-  padding: 5px 20px;
+  padding: 10px 20px;
   display: flex;
   flex-direction: column;
   background-color: ${({ theme }) => theme.background};
@@ -181,6 +191,7 @@ const PostMyselfMain = styled.div`
   align-items: center;
   border-bottom: 1px solid;
   border-color: ${({ theme }) => theme.borderBackGround};
+  padding-bottom: 10px;
 `;
 
 const PostMyselfLogo = styled.div`
@@ -196,7 +207,6 @@ const PostMyselfLogo = styled.div`
 
 const PostMyselfImg = styled.img`
   max-height: 100%;
-  cursor: pointer;
 `;
 
 const PostMyselfInput = styled.input`
@@ -223,6 +233,7 @@ const PostMyselfUpload = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
+  margin-top: 5px;
 `;
 
 const PostMyselfUploadImg = styled.img`
@@ -248,30 +259,46 @@ const PostMyselfUploadContains = styled.div`
   font-weight: 600;
   color: ${({ theme }) => theme.color};
 
+  position: relative;
+
   :hover {
     background-color: ${({ theme }) => theme.headerHoverColor};
   }
 `;
 
-const PostMyself = ({ user, value, handleValue, handleMessage }) => {
+const PostMyself = ({
+  user,
+  value,
+  imgValue,
+  handleValue,
+  handleImgValue,
+  handleDeleteImgValue,
+  handleMessage,
+}) => {
   return (
     <PostMyselfContains>
       <PostMyselfMain>
         <PostMyselfLogo>
-          <PostMyselfImg />
-          User
+          <PostMyselfImg src={user.img}/>
         </PostMyselfLogo>
         <PostMyselfInput
           value={value}
           onChange={handleValue}
-          placeholder={user + "，在想些甚麼 ?"}
+          placeholder={user.nickName + "，在想些甚麼 ?"}
         />
       </PostMyselfMain>
+      <img src={imgValue} />
       <PostMyselfUpload>
         <PostMyselfUploadContains>
           <PostMyselfUploadImg src={photo} />
-          上傳相片
+          <UploadImgBtn type="file" onChange={handleImgValue}></UploadImgBtn>
+          上傳圖片
         </PostMyselfUploadContains>
+        {imgValue && (
+          <PostMyselfUploadContains onClick={handleDeleteImgValue}>
+            清除圖片
+          </PostMyselfUploadContains>
+        )}
         <PostMyselfUploadContains onClick={handleMessage}>
           <PostMyselfUploadImg src={mail} />
           送出
@@ -284,7 +311,7 @@ const PostMyself = ({ user, value, handleValue, handleMessage }) => {
 const PostContain = styled.div`
   background-color: ${({ theme }) => theme.background};
   width: 100%;
-  padding: 10px 0;
+  padding:10px 0 30px 0;
   display: flex;
   flex-direction: column;
   border-radius: 10px;
@@ -383,20 +410,35 @@ const PostContentNiceChage = styled(PostContentNiceNumberImg)`
   height: 30px;
 `;
 
+const UploadImgBtn = styled.input`
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  cursor: pointer;
+  opacity: 0;
+`;
+
+
 export default function HomePages() {
+
+  const [loading, setLoading] = useState(true);
+  
   const [value, setValue] = useState("");
+  const [imageValue, setImageValue] = useState("");
 
   const [allPost, setAllPost] = useState([]);
 
   const { user, setUser } = useContext(AuthContext);
+
 
   const { colorMode } = useContext(ThemeContext);
 
   useEffect(() => {
     allPostApi().then((res) => {
       setAllPost(res.result);
+      setLoading(false)
     });
-  }, []);
+  },[]);
 
   const navigate = useNavigate();
 
@@ -439,8 +481,7 @@ export default function HomePages() {
       <PostContain id={id}>
         <PostAuthContain>
           <PostMyselfLogo>
-            <PostMyselfImg />
-            {head}
+            <PostMyselfImg src={head}/>
           </PostMyselfLogo>
           <PostAuthDataContain>
             <PostAuthData>
@@ -465,7 +506,7 @@ export default function HomePages() {
         </PostAuthContain>
         <PostContentContain>{content}</PostContentContain>
         <PostContentImg src={src} />
-        <PostContentNice>
+        {/* <PostContentNice>
           <PostContentNiceNumber>
             <PostContentNiceNumberImg src={niceImg} /> {goodNumber}
           </PostContentNiceNumber>
@@ -475,7 +516,7 @@ export default function HomePages() {
             />{" "}
             {nice ? "已讚" : "讚"}
           </PostContentNiceCheck>
-        </PostContentNice>
+        </PostContentNice> */}
       </PostContain>
     );
   };
@@ -485,8 +526,12 @@ export default function HomePages() {
   }
 
   function handlePostArticle() {
+    if (value === "") {
+      return
+    }
     setValue("");
-    postArticleAPI(user.id, value);
+    setImageValue("")
+    postArticleAPI(user.id, value,imageValue);
     Swal.fire({
       icon: "success",
       title: "發文成功",
@@ -498,51 +543,43 @@ export default function HomePages() {
     });
   }
 
+  const handleOnChange = (e) => {
+    const file = e.target.files[0];
+    const reader = new FileReader();
+    reader.addEventListener(
+      "load",
+      function () {
+        // convert image file to base64 string
+        setImageValue(reader.result);
+      },
+      false
+    );
+    if (file) {
+      reader.readAsDataURL(file);
+    }
+  };
+  
   return (
     <>
       <Box>
-        <DynamicContain>
+        <LoadArea active={loading}/>
+        {/* <DynamicContain>
           <DynamicMyself src={work01} />
           <Dynamic src={work01} />
           <Dynamic src={work02} />
           <Dynamic src={work03} />
           <DynamicRWD src={work01} />
-        </DynamicContain>
+        </DynamicContain> */}
         <PostMyself
+          imgValue={imageValue}
           value={value}
           handleValue={handlePostContent}
+          handleImgValue={handleOnChange}
+          handleDeleteImgValue={() => {
+            setImageValue(null);
+          }}
           handleMessage={handlePostArticle}
-          user="User"
-        />
-        <Post
-          id="8"
-          colorMode={colorMode}
           user={user}
-          title="奇摩"
-          dete="2011-11-11"
-          content="我好帥"
-          src={work02}
-          goodNumber="777"
-        />
-        <Post
-          id="4"
-          colorMode={colorMode}
-          user="User"
-          title="奇摩"
-          dete="2011-11-11"
-          content="我好帥"
-          src={work02}
-          goodNumber="777"
-        />
-        <Post
-          id="4"
-          colorMode={colorMode}
-          user="User"
-          title="奇摩"
-          dete="2011-11-11"
-          content="我好帥"
-          src={work02}
-          goodNumber="777"
         />
         {allPost.length !== 0 &&
           allPost.map((date) => {
@@ -557,8 +594,7 @@ export default function HomePages() {
                 articleId={date.id}
                 dete={new Date(date.createdAt).toLocaleDateString()}
                 content={date.content}
-                src={work02}
-                goodNumber={date.awesomel}
+                src={date.img}
               />
             );
           })}

@@ -16,7 +16,7 @@ module.exports = (sequelize, DataTypes) => {
   Comment.init({
     UserId: DataTypes.STRING,
     content: DataTypes.STRING,
-    img: DataTypes.STRING,
+    img: DataTypes.TEXT,
     awesomel: DataTypes.STRING
   }, {
     sequelize,

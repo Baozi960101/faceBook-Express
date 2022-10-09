@@ -2,14 +2,22 @@ const express = require("express");
 const app = express();
 const bodyParser = require("body-parser");
 const port = 5001;
+const multer = require("multer");
+const upload = multer();
 
 const usersController = require("./controllers/users");
 const commentController = require("./controllers/comments");
 
-app.use(bodyParser.urlencoded({ extended: false }));
-app.use(bodyParser.json());
+app.use(
+  bodyParser.urlencoded({
+    limit: "50mb",
+    extended: true,
+    parameterLimit: 50000,
+  })
+);
+app.use(bodyParser.json({ limit: "50mb" }));
 
-app.get("/all",usersController.getAll);
+app.get("/all", usersController.getAll);
 
 app.post("/register", usersController.handleRegister);
 
@@ -17,7 +25,7 @@ app.post("/login", usersController.handleLogin);
 
 app.get("/checkMe", usersController.checkLogin);
 
-app.post("/article", commentController.postArticle);
+app.post("/article", upload.array(), commentController.postArticle);
 
 app.post("/colorMode", usersController.changeColorMode);
 

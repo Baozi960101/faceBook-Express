@@ -6,10 +6,10 @@ import {
 } from "../../global/style";
 import facebook from "../../image/facebook.svg";
 import cross from "../../image/cross.svg";
-import { useState , useContext } from "react";
+import { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../../global/context";
-import { createNewUserAPI , loginAPI } from "../../global/API";
+import { createNewUserAPI, loginAPI } from "../../global/API";
 import { SetUserToken } from "../../global/utils";
 
 import Swal from "sweetalert2";
@@ -271,17 +271,17 @@ const Footer = () => {
   return (
     <FooterArea>
       <FooterLinkArea>
-        <FooterLink href="">中文(台灣)</FooterLink>
-        <FooterLink href="">English(US)</FooterLink>
-        <FooterLink href="">日本語</FooterLink>
-        <FooterLink href="">Deutsch</FooterLink>
+        <FooterLink >中文(台灣)</FooterLink>
+        <FooterLink >English(US)</FooterLink>
+        <FooterLink >日本語</FooterLink>
+        <FooterLink >Deutsch</FooterLink>
         <Curve></Curve>
-        <FooterLink href="">註冊</FooterLink>
-        <FooterLink href="">登入</FooterLink>
-        <FooterLink href="">Message</FooterLink>
-        <FooterLink href="">Facebook Lite </FooterLink>
-        <FooterLink href="">遊戲</FooterLink>
-        <FooterLink href="">地標</FooterLink>
+        <FooterLink >註冊</FooterLink>
+        <FooterLink >登入</FooterLink>
+        <FooterLink >Message</FooterLink>
+        <FooterLink >Facebook Lite </FooterLink>
+        <FooterLink >遊戲</FooterLink>
+        <FooterLink >地標</FooterLink>
         <Meta>Meta @ 2022</Meta>
       </FooterLinkArea>
     </FooterArea>
@@ -421,7 +421,7 @@ export default function LoginPages() {
 
   const { setUser } = useContext(AuthContext);
 
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   function handleUser(e) {
     setUsername(e.target.value);
@@ -471,17 +471,14 @@ export default function LoginPages() {
       return;
     }
     setLoginFail(false);
-    loginAPI(
-      username,
-      password,
-    ).then((res)=>{
+    loginAPI(username, password).then((res) => {
       if (res.message === "0") {
         setLoginFail(true);
-        return
+        return;
       }
-      setUser(res.user)
-      SetUserToken(res.token)
-    })
+      setUser(res.user);
+      SetUserToken(res.token);
+    });
   }
 
   function handleRegisterLogin() {
@@ -495,25 +492,19 @@ export default function LoginPages() {
       creatPassword,
       creatPhone,
       creatMail
-    ).then((res) => {
-      if (res.status === "1") {
-        setRegister(!register);
-        Swal.fire({
-          icon: "success",
-          title: "註冊成功",
-          confirmButtonColor: "#1877F2",
-        });
-        setCreatNickname("");
-        setCreatUsername("");
-        setCreatPassword("");
-        setCreatPhone("");
-        setCreatMail("");
-      }
+    );
+    setRegister(!register);
+    Swal.fire({
+      icon: "success",
+      title: "註冊成功",
+      confirmButtonColor: "#1877F2",
     });
+    setCreatNickname("");
+    setCreatUsername("");
+    setCreatPassword("");
+    setCreatPhone("");
+    setCreatMail("");
   }
-
-
-  
 
   return (
     <>

@@ -16,7 +16,7 @@ module.exports = {
         type: Sequelize.STRING
       },
       img: {
-        type: Sequelize.STRING
+        type: Sequelize.TEXT
       },
       awesomel: {
         type: Sequelize.STRING

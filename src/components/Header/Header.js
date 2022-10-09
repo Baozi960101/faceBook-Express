@@ -1,5 +1,5 @@
 import { useState, useContext } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { isRouteErrorResponse, useLocation, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import facebookLogo from "../../image/facebookLogo.svg";
 import search from "../../image/search.svg";
@@ -287,7 +287,10 @@ const PersonalInformationArea = styled.div`
   cursor: pointer;
 
   ${MEDIA_QUERY_Header_LG} {
-    width:auto;
+    width: 200px;
+  }
+  ${MEDIA_QUERY} {
+    width: auto
   }
 `;
 
@@ -300,8 +303,11 @@ const PersonalInformationList = styled.a`
   border-radius: 40px;
   background-color: ${({ theme }) => theme.logoImgBackground};
   overflow: hidden;
-
 `;
+
+const HeadContains = styled.img`
+  max-height: 100%;
+`
 
 const PersonalInformationLogo = styled.img`
   width: 20px;
@@ -313,31 +319,35 @@ const PersonalInformationListRWD = styled.div`
   }
 `;
 
-const PersonalInformation = ({ onclick, colorMode }) => {
+
+
+const PersonalInformation = ({ onclick, colorMode , src}) => {
   return (
     <PersonalInformationArea>
       <PersonalInformationListRWD>
-        <PersonalInformationList href="https://www.facebook.com/">
+        <PersonalInformationList target="_blank" href="https://www.facebook.com/">
           <PersonalInformationLogo
             src={colorMode === "light" ? grid : gridDark}
           />
         </PersonalInformationList>
       </PersonalInformationListRWD>
       <PersonalInformationListRWD>
-        <PersonalInformationList href="https://www.messenger.com/">
+        <PersonalInformationList target="_blank" href="https://www.messenger.com/">
           <PersonalInformationLogo
             src={colorMode === "light" ? message : messageDark}
           />
         </PersonalInformationList>
       </PersonalInformationListRWD>
       <PersonalInformationListRWD>
-        <PersonalInformationList href="https://www.facebook.com/">
+        <PersonalInformationList target="_blank" href="https://www.facebook.com/">
           <PersonalInformationLogo
             src={colorMode === "light" ? bell : bellDark}
           />
         </PersonalInformationList>
       </PersonalInformationListRWD>
-      <PersonalInformationList onClick={onclick}>User</PersonalInformationList>
+      <PersonalInformationList onClick={onclick}>
+        <HeadContains src={src}/>
+      </PersonalInformationList>
     </PersonalInformationArea>
   );
 };
@@ -591,6 +601,7 @@ export default function Header() {
         onClick={toHome}
         action={pathname === href}
         href={href}
+        target="_blank"
         onMouseOver={MouseOverClassificationClick}
         onMouseOut={MouseOutClassificationClick}
       >
@@ -688,6 +699,7 @@ export default function Header() {
         </ClassificationArea>
         <PersonalInformation
           colorMode={colorMode}
+          src={user.img}
           onclick={(e) => {
             handleChangeSetUp(e);
             setMoreShow(false);
@@ -704,7 +716,7 @@ export default function Header() {
             <SetUpMyself>
               <SetUpMyselfName>
                 <PersonalInformationList style={{ marginRight: "10px" }}>
-                  User
+                  <HeadContains src={user.img}/>
                 </PersonalInformationList>
                 {user.nickName}
               </SetUpMyselfName>
@@ -737,7 +749,6 @@ export default function Header() {
               img={colorMode === "light" ? arrowLeft : arrowLeftDark}
             />
             <OtherSetUpList
-              onClick=""
               img={colorMode === "light" ? setting : settingDark}
               text="個人"
             />

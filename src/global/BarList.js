@@ -101,7 +101,7 @@ export const Curve = styled.div`
 
 export const BarList = ({ text, src, onClick }) => {
   return (
-    <BarListContains href="https://www.facebook.com/" onClick={onClick}>
+    <BarListContains target="_blank" href="https://www.facebook.com/" onClick={onClick}>
       <BarListIcon src={src} />
       {text}
     </BarListContains>
@@ -129,7 +129,7 @@ export const ConnectionMailBarList = ({ text, src, onClick,}) => {
 
 export const HideBarList = ({ active, text, src, onClick }) => {
   return (
-    <HideBarListContains href="https://www.facebook.com/" active={active} onClick={onClick}>
+    <HideBarListContains target="_blank" href="https://www.facebook.com/" active={active} onClick={onClick}>
       <BarListIcon src={src} />
       {text}
     </HideBarListContains>
