@@ -1,7 +1,7 @@
 /* eslint-disable jsx-a11y/alt-text */
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useMemo, useState } from "react";
 import {
   MEDIA_QUERY_Header_SMALL,
   MEDIA_QUERY_Header_MB,
@@ -16,24 +16,25 @@ import niceImg from "../../image/nice.svg";
 import good from "../../image/good.svg";
 import noGood from "../../image/noGood.svg";
 import noGoodDark from "../../image/noGoodDark.svg";
+import options from "../../image/options.svg";
+import optionsDark from "../../image/optionsDark.svg";
 import cross from "../../image/cross.svg";
 import crossDark from "../../image/crossDark.svg";
-import work01 from "../../image/work01.png";
-import work02 from "../../image/work02.png";
-import work03 from "../../image/work03.png";
 import { ThemeContext, AuthContext } from "../../global/context";
 import {
   postArticleAPI,
   allPostApi,
   handleDeletePostApi,
+  handleSinglePostApi,
 } from "../../global/API";
 import Swal from "sweetalert2";
+import Skeleton from "@mui/material/Skeleton";
 
 const Box = styled.div`
   padding-top: 10px;
   background-color: ${({ theme }) => theme.bodyBackGroundColor};
   color: ${({ theme }) => theme.color};
-  max-width: 680px;
+  width: 680px;
   display: flex;
   flex-direction: column;
   box-sizing: border-box;
@@ -64,13 +65,13 @@ const Box = styled.div`
 
 const LoadArea = styled.div`
   background-color: ${({ theme }) => theme.bodyBackGroundColor};
-  width:690px;
-  height:100vh;
-  position:fixed;
-  top:56px;
-  z-index:1;
-  display:${props => props.active ? "flex" : "none"};
-`
+  width: 690px;
+  height: 100vh;
+  position: fixed;
+  top: 56px;
+  z-index: 1;
+  display: ${(props) => (props.active ? "flex" : "none")};
+`;
 
 const DynamicContain = styled.div`
   width: 100%;
@@ -173,7 +174,7 @@ const DynamicRWD = ({ src }) => {
 
 const PostMyselfContains = styled.div`
   width: 100%;
-  padding: 10px 20px;
+  padding: 13px 20px;
   display: flex;
   flex-direction: column;
   background-color: ${({ theme }) => theme.background};
@@ -191,7 +192,7 @@ const PostMyselfMain = styled.div`
   align-items: center;
   border-bottom: 1px solid;
   border-color: ${({ theme }) => theme.borderBackGround};
-  padding-bottom: 10px;
+  padding-bottom: 12px;
 `;
 
 const PostMyselfLogo = styled.div`
@@ -211,7 +212,7 @@ const PostMyselfImg = styled.img`
 
 const PostMyselfInput = styled.input`
   width: 88%;
-  height: 22px;
+  height: 25px;
   background-color: ${({ theme }) => theme.searchBackground};
   padding: 8px 12px;
   box-sizing: box-sizing;
@@ -220,7 +221,7 @@ const PostMyselfInput = styled.input`
   cursor: pointer;
   font-size: 16px;
   outline: 0;
-  margin-left: 15px;
+  margin-left: 8px;
 
   :hover {
     background-color: ${({ theme }) => theme.headerHoverColor};
@@ -233,12 +234,12 @@ const PostMyselfUpload = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-top: 5px;
+  margin-top: 10px;
 `;
 
 const PostMyselfUploadImg = styled.img`
-  width: 30px;
-  height: 30px;
+  width: 28px;
+  height: 28px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -257,7 +258,8 @@ const PostMyselfUploadContains = styled.div`
   border-radius: 10px;
   cursor: pointer;
   font-weight: 600;
-  color: ${({ theme }) => theme.color};
+  font-size: 15px;
+  color: ${({ theme }) => theme.homePagesColor};
 
   position: relative;
 
@@ -279,12 +281,12 @@ const PostMyself = ({
     <PostMyselfContains>
       <PostMyselfMain>
         <PostMyselfLogo>
-          <PostMyselfImg src={user.img}/>
+          <PostMyselfImg src={user.img} />
         </PostMyselfLogo>
         <PostMyselfInput
           value={value}
           onChange={handleValue}
-          placeholder={user.nickName + "，在想些甚麼 ?"}
+          placeholder={user.nickName + "，在想些什麼 ?"}
         />
       </PostMyselfMain>
       <img src={imgValue} />
@@ -311,11 +313,12 @@ const PostMyself = ({
 const PostContain = styled.div`
   background-color: ${({ theme }) => theme.background};
   width: 100%;
-  padding:10px 0 30px 0;
+  padding: 10px 0 30px 0;
   display: flex;
   flex-direction: column;
   border-radius: 10px;
   box-shadow: 0 10px 15px rgb(0 0 0 / 10%), 0 1px rgb(0 0 0 / 10%);
+  position: relative;
 
   & + & {
     margin-top: 20px;
@@ -336,7 +339,7 @@ const PostAuthDataContain = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-left: 15px;
+  margin-left: 8px;
 `;
 
 const PostAuthData = styled.div`
@@ -347,33 +350,32 @@ const PostAuthData = styled.div`
 `;
 
 const PostAuthTitle = styled.div`
-  font-size: 16px;
+  font-size: 17px;
   font-weight: 600;
-  color: ${({ theme }) => theme.color};
+  color: ${({ theme }) => theme.articleTitle};
 `;
 
 const PostAuthDete = styled.div`
   font-size: 12px;
-  color: #65676b;
+  color: ${({ theme }) => theme.homePagesColor};
+  font-weight: 400;
 `;
 
 const PostBtn = styled.img`
   cursor: pointer;
-  width: 20px;
-  height: 20px;
-
-  & + & {
-    margin-left: 20px;
-  }
+  width: 18px;
+  height: 18px;
+  margin-right: 5px;
 `;
 
 const PostContentContain = styled.div`
   width: 100%;
   box-sizing: border-box;
   padding: 15px 18px;
-  color: ${({ theme }) => theme.color};
+  color: ${({ theme }) => theme.articleTitle};
   font-size: 16px;
-  font-weight: 600;
+  font-weight: 400;
+  margin-bottom: 5px;
 `;
 
 const PostContentImg = styled.img`
@@ -406,8 +408,8 @@ const PostContentNiceCheck = styled.div`
 `;
 
 const PostContentNiceChage = styled(PostContentNiceNumberImg)`
-  width: 30px;
-  height: 30px;
+  width: 28px;
+  height: 28px;
 `;
 
 const UploadImgBtn = styled.input`
@@ -418,11 +420,119 @@ const UploadImgBtn = styled.input`
   opacity: 0;
 `;
 
+const MoreOption = styled.div`
+  display: ${(props) => (props.active ? "flex" : "none")};
+  background-color: ${({ theme }) => theme.background};
+  width: 120px;
+  height: 100px;
+  position: absolute;
+  top: 40px;
+  right: 30px;
+  border-radius: 8px;
+  box-shadow: 0 10px 10px rgb(0 0 0 / 10%), 0 2px 10px rgb(0 0 0 / 10%);
+  flex-direction: column;
+  overflow: hidden;
+`;
+
+const MoreOptionArea = styled.div`
+  width: 100%;
+  height: 50%;
+  display: flex;
+  align-items: center;
+  font-size: 15px;
+  cursor: pointer;
+
+  :hover {
+    background-color: ${({ theme }) => theme.headerHoverColor};
+  }
+`;
+
+const UpdateArticleBackGround = styled.div`
+  overflow: hidden;
+  width: 680px;
+  height: 100%;
+  position: fixed;
+  top: 0;
+  display: ${(props) => (props.active ? "flex" : "none")};
+  align-items: center;
+  justify-content: center;
+  background-color: rgba(252, 252, 253, 0.5);
+  z-index: 2;
+`;
+
+const UpdateArticleArea = styled.div`
+  display: flex;
+  flex-direction: column;
+  margin: auto;
+  width: 500px;
+  padding-bottom: 20px;
+  background-color: ${({ theme }) => theme.background};
+  box-shadow: 0 10px 10px rgb(0 0 0 / 10%), 0 2px 10px rgb(0 0 0 / 10%);
+  border-radius: 10px;
+  position: fixed;
+`;
+
+const UpdateArticleTitle = styled.div`
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 60px;
+  position: relative;
+  font-size: 20px;
+  font-weight: 600;
+  border-bottom: 1px solid #e5e5e5;
+`;
+
+const UpdateArticleAreaCross = styled.div`
+  border-radius: 36px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  width: 36px;
+  height: 36px;
+  background-color: ${({ theme }) => theme.logoImgBackground};
+  position: absolute;
+  top: 10px;
+  right: 10px;
+
+  :hover {
+    background-color: ${({ theme }) => theme.headerHoverColor};
+  }
+`;
+
+const UpdateArticleCrossBtn = styled.img`
+  width: 15px;
+  height: 15px;
+`;
+
+const UpdateArticleInput = styled.input`
+  width: 90%;
+  height: 60px;
+  font-size: 16px;
+  padding: 0 20px;
+  margin: 20px auto;
+  box-sizing: border-box;
+  background-color: ${({ theme }) => theme.background};
+`;
+
+const UpdateArticleBtn = styled.div`
+  margin: 10px auto 0 auto;
+  width: 90%;
+  height: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 5px;
+  background-color: #1b74e4;
+  color: white;
+  cursor: pointer;
+`;
 
 export default function HomePages() {
+  const [loading, setLoading] = useState(false);
 
-  const [loading, setLoading] = useState(true);
-  
   const [value, setValue] = useState("");
   const [imageValue, setImageValue] = useState("");
 
@@ -430,15 +540,14 @@ export default function HomePages() {
 
   const { user, setUser } = useContext(AuthContext);
 
-
   const { colorMode } = useContext(ThemeContext);
 
   useEffect(() => {
     allPostApi().then((res) => {
       setAllPost(res.result);
-      setLoading(false)
+      // setLoading(false)
     });
-  },[]);
+  }, []);
 
   const navigate = useNavigate();
 
@@ -455,17 +564,29 @@ export default function HomePages() {
     articleId,
   }) => {
     const [nice, setNice] = useState(false);
+    const [option, setOption] = useState(false);
+
+    const [editChange, setEditChange] = useState(false);
+
+    const [titleValue, setTitleValue] = useState(content);
+    const [imageValue, setImageValue] = useState(src);
+
+    function clostOption(e) {
+      e.stopPropagation();
+      setOption(false);
+    }
 
     function niceClick() {
       setNice(!nice);
     }
 
-    function handleUpdatePost(id) {
-      navigate(`/update/${id}`);
+    function handleUpdatePost() {
+      setEditChange(true);
     }
 
-    async function handleDeletePost() {
+    function handleDeletePost() {
       handleDeletePostApi(user.id, articleId);
+      setLoading(true);
       Swal.fire({
         icon: "success",
         title: "刪除成功",
@@ -473,33 +594,126 @@ export default function HomePages() {
       }).then(() => {
         allPostApi().then((res) => {
           setAllPost(res.result);
+          setLoading(false);
+        });
+      });
+    }
+
+    const handleOnChange = (e) => {
+      const file = e.target.files[0];
+      const reader = new FileReader();
+      reader.addEventListener(
+        "load",
+        function () {
+          // convert image file to base64 string
+          setImageValue(reader.result);
+        },
+        false
+      );
+      if (file) {
+        reader.readAsDataURL(file);
+      }
+    };
+
+    function handleNewPost() {
+      handleSinglePostApi(id, articleId, titleValue, imageValue);
+      setEditChange(false);
+      setLoading(true);
+      Swal.fire({
+        icon: "success",
+        title: "修改成功",
+        confirmButtonColor: "#1877F2",
+      }).then(() => {
+        allPostApi().then((res) => {
+          setAllPost(res.result);
+          setLoading(false);
         });
       });
     }
 
     return (
-      <PostContain id={id}>
+      <PostContain onClick={clostOption} id={id}>
+        <UpdateArticleBackGround active={editChange}>
+          <UpdateArticleArea>
+            <UpdateArticleTitle>
+              編輯貼文
+              <UpdateArticleAreaCross
+                onClick={() => {
+                  setEditChange(false);
+                }}
+              >
+                <UpdateArticleCrossBtn
+                  src={colorMode === "light" ? cross : crossDark}
+                />
+              </UpdateArticleAreaCross>
+            </UpdateArticleTitle>
+            <UpdateArticleInput
+              value={titleValue}
+              onChange={(e) => {
+                setTitleValue(e.target.value);
+              }}
+            />
+            <img style={{ margin: "15px 0" }} src={imageValue} />
+            <PostMyselfUpload style={{ width: "90%", margin: "auto" }}>
+              <PostMyselfUploadContains>
+                <PostMyselfUploadImg src={photo} />
+                <UploadImgBtn
+                  type="file"
+                  onChange={handleOnChange}
+                ></UploadImgBtn>
+                上傳圖片
+              </PostMyselfUploadContains>
+              {imageValue && (
+                <PostMyselfUploadContains
+                  onClick={() => {
+                    setImageValue(null);
+                  }}
+                >
+                  清除圖片
+                </PostMyselfUploadContains>
+              )}
+            </PostMyselfUpload>
+            <UpdateArticleBtn onClick={handleNewPost}>儲存</UpdateArticleBtn>
+          </UpdateArticleArea>
+        </UpdateArticleBackGround>
         <PostAuthContain>
           <PostMyselfLogo>
-            <PostMyselfImg src={head}/>
+            <PostMyselfImg src={head} />
           </PostMyselfLogo>
           <PostAuthDataContain>
             <PostAuthData>
               <PostAuthTitle>{title}</PostAuthTitle>
               <PostAuthDete>{dete}</PostAuthDete>
             </PostAuthData>
+            <MoreOption active={option}>
+              <MoreOptionArea onClick={handleUpdatePost}>
+                <PostBtn
+                  src={colorMode === "light" ? edit : editDark}
+                  style={{ marginLeft: "15px", marginRight: "10px" }}
+                />
+                編輯
+              </MoreOptionArea>
+              <MoreOptionArea onClick={handleDeletePost}>
+                <PostBtn
+                  src={colorMode === "light" ? cross : crossDark}
+                  style={{ marginLeft: "15px", marginRight: "10px" }}
+                />
+                刪除
+              </MoreOptionArea>
+            </MoreOption>
             {user.id === parseInt(id) && (
               <div style={{ display: "flex" }}>
                 <PostBtn
-                  onClick={() => {
-                    handleUpdatePost(articleId);
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setOption(!option);
                   }}
-                  src={colorMode === "light" ? edit : editDark}
+                  src={colorMode === "light" ? options : optionsDark}
                 />
-                <PostBtn
+                {/* <PostBtn
                   onClick={handleDeletePost}
                   src={colorMode === "light" ? cross : crossDark}
-                />
+                /> */}
               </div>
             )}
           </PostAuthDataContain>
@@ -527,11 +741,12 @@ export default function HomePages() {
 
   function handlePostArticle() {
     if (value === "") {
-      return
+      return;
     }
     setValue("");
-    setImageValue("")
-    postArticleAPI(user.id, value,imageValue);
+    setImageValue("");
+    postArticleAPI(user.id, value, imageValue);
+    setLoading(true);
     Swal.fire({
       icon: "success",
       title: "發文成功",
@@ -539,6 +754,7 @@ export default function HomePages() {
     }).then(() => {
       allPostApi().then((res) => {
         setAllPost(res.result);
+        setLoading(false);
       });
     });
   }
@@ -558,11 +774,33 @@ export default function HomePages() {
       reader.readAsDataURL(file);
     }
   };
-  
+
+  const NewPost = useMemo(() => {
+    return allPost.map((date) => {
+      return (
+        <Post
+          user={user}
+          key={date.id}
+          id={date.UserId}
+          colorMode={colorMode}
+          head={date.User.img}
+          title={date.User.nickName}
+          articleId={date.id}
+          dete={new Date(date.createdAt).toLocaleDateString()}
+          content={date.content}
+          src={date.img}
+        />
+      );
+    });
+  }, [allPost, colorMode, user]);
+
   return (
     <>
       <Box>
-        <LoadArea active={loading}/>
+        <LoadArea active={loading}>
+          <Skeleton variant="rectangular" width={210} height={60} />
+          <Skeleton variant="rounded" width={210} height={60} />
+        </LoadArea>
         {/* <DynamicContain>
           <DynamicMyself src={work01} />
           <Dynamic src={work01} />
@@ -581,23 +819,7 @@ export default function HomePages() {
           handleMessage={handlePostArticle}
           user={user}
         />
-        {allPost.length !== 0 &&
-          allPost.map((date) => {
-            return (
-              <Post
-                user={user}
-                key={date.id}
-                id={date.UserId}
-                colorMode={colorMode}
-                head={date.User.img}
-                title={date.User.nickName}
-                articleId={date.id}
-                dete={new Date(date.createdAt).toLocaleDateString()}
-                content={date.content}
-                src={date.img}
-              />
-            );
-          })}
+        {allPost.length !== 0 && NewPost}
       </Box>
     </>
   );

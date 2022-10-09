@@ -71,7 +71,7 @@ const usersController = {
           nickName: dete.nickName,
           phone: dete.phone,
           email: dete.email,
-          img: dete.img,
+          // img: dete.img,
           colorMode: dete.colorMode,
         };
         const token = jwt.sign(payload, secretKey);

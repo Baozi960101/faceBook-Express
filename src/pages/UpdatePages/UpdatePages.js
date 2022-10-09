@@ -16,7 +16,7 @@ const Box = styled.div`
   padding-top: 10px;
   background-color: ${({ theme }) => theme.bodyBackGroundColor};
   color: ${({ theme }) => theme.color};
-  max-width: 680px;
+  width: 680px;
   display: flex;
   height: calc(100vh - 55px);
   flex-direction: column;

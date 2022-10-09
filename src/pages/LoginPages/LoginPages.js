@@ -206,12 +206,12 @@ const Login = ({
 }) => {
   return (
     <LoginArea>
-      <LoginInput value={username} onChange={handleUser} placeholder="帳號" />
+      <LoginInput value={username} onChange={handleUser} placeholder="帳號 111" />
       <LoginInput
         value={password}
         onChange={handlePass}
         type="password"
-        placeholder="密碼"
+        placeholder="密碼 111"
       />
       <LoginButton onClick={login}>登入</LoginButton>
       <PasswordText active={active}>
@@ -476,6 +476,7 @@ export default function LoginPages() {
         setLoginFail(true);
         return;
       }
+      console.log(res.token);
       setUser(res.user);
       SetUserToken(res.token);
     });

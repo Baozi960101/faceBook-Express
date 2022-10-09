@@ -19,9 +19,10 @@ import { checkLoginAPI } from "../../global/API";
 const theme = {
   light: {
     placeholderColor: "#65676b",
-    headerHoverColor: "#e4e6eb",
+    headerHoverColor: "#f0f2f5",
     background: "white",
     color: "#1c1e21",
+    homePagesColor:"#656761",
     searchBackground: "#f0f2f5",
     logoImgBackground: "#e4e6eb",
     bodyBackGroundColor: "#f0f2f5",
@@ -29,12 +30,14 @@ const theme = {
     borderBackGround: "#ced0d4",
     scrollbarColor: "#bcc0c4",
     setUpHoverBackGroundColor: "#e4e6eb",
+    articleTitle:"#050505",
   },
   dark: {
     placeholderColor: "#b0b3b8",
     headerHoverColor: "#3a3b3c",
     background: "#242526",
     color: "#e4e6eb",
+    homePagesColor:"#B0B3B8",
     searchBackground: "#3a3b3c",
     logoImgBackground: "#3a3b3c",
     bodyBackGroundColor: "#161718",
@@ -42,6 +45,7 @@ const theme = {
     borderBackGround: "#3e4042",
     scrollbarColor: "#5e5e5f",
     setUpHoverBackGroundColor: "#474849",
+    articleTitle:"#E4E6EB",
   },
 };
 
@@ -61,7 +65,7 @@ const MainBox = styled.div`
 
 export default function App() {
   const [colorMode, setColorMode] = useState("light");
-  const [user, setUser] = useState(false);
+  const [user, setUser] = useState(true);
   const [searchLogo, setSearchLogo] = useState(true);
   const [menuChange, setMenuChange] = useState(false);
   const [setUpChange, setSetUpChange] = useState(false);
@@ -70,9 +74,9 @@ export default function App() {
     if (!GetUserToken()) {
       return;
     }
-    checkLoginAPI(GetUserToken()).then((res)=>{
-      setUser(res.user)
-    })
+    // checkLoginAPI(GetUserToken()).then((res)=>{
+    //   setUser(res.user)
+    // })
   }, []);
 
   useEffect(() => {
