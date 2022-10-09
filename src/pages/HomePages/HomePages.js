@@ -20,6 +20,7 @@ import options from "../../image/options.svg";
 import optionsDark from "../../image/optionsDark.svg";
 import cross from "../../image/cross.svg";
 import crossDark from "../../image/crossDark.svg";
+import work01 from "../../image/work01.png";
 import { ThemeContext, AuthContext } from "../../global/context";
 import {
   postArticleAPI,
@@ -65,12 +66,31 @@ const Box = styled.div`
 
 const LoadArea = styled.div`
   background-color: ${({ theme }) => theme.bodyBackGroundColor};
-  width: 690px;
+  width: 680px;
   height: 100vh;
   position: fixed;
-  top: 56px;
+  top: 58px;
   z-index: 1;
   display: ${(props) => (props.active ? "flex" : "none")};
+  flex-direction: column;
+  align-items: center;
+  padding-top: 25px;
+
+  ${MEDIA_QUERY_Header_SMALL} {
+    margin: 0 40px;
+  }
+
+  ${MEDIA_QUERY_Header_MB} {
+    max-width: calc(100vw - 650px);
+  }
+
+  ${MEDIA_QUERY_SideBar} {
+    max-width: calc(100vw - 350px);
+  }
+  ${MEDIA_QUERY_Header_SMALL} {
+    width: 0px;
+    overflow: hidden;
+  }
 `;
 
 const DynamicContain = styled.div`
@@ -193,6 +213,7 @@ const PostMyselfMain = styled.div`
   border-bottom: 1px solid;
   border-color: ${({ theme }) => theme.borderBackGround};
   padding-bottom: 12px;
+  box-sizing: border-box;
 `;
 
 const PostMyselfLogo = styled.div`
@@ -214,6 +235,7 @@ const PostMyselfInput = styled.input`
   width: 88%;
   height: 25px;
   background-color: ${({ theme }) => theme.searchBackground};
+  color: ${({ theme }) => theme.color};
   padding: 8px 12px;
   box-sizing: box-sizing;
   border-radius: 20px;
@@ -347,6 +369,7 @@ const PostAuthData = styled.div`
   height: 100%;
   display: flex;
   flex-direction: column;
+  box-sizing: border-box;
 `;
 
 const PostAuthTitle = styled.div`
@@ -456,7 +479,7 @@ const UpdateArticleBackGround = styled.div`
   display: ${(props) => (props.active ? "flex" : "none")};
   align-items: center;
   justify-content: center;
-  background-color: rgba(252, 252, 253, 0.5);
+  background-color: ${({ theme }) => theme.updateArticleBackGround};
   z-index: 2;
 `;
 
@@ -507,14 +530,14 @@ const UpdateArticleCrossBtn = styled.img`
   height: 15px;
 `;
 
-const UpdateArticleInput = styled.input`
+const UpdateArticleInput = styled.textarea`
   width: 90%;
-  height: 60px;
   font-size: 16px;
   padding: 0 20px;
   margin: 20px auto;
   box-sizing: border-box;
   background-color: ${({ theme }) => theme.background};
+  color: ${({ theme }) => theme.color};
 `;
 
 const UpdateArticleBtn = styled.div`
@@ -530,26 +553,104 @@ const UpdateArticleBtn = styled.div`
   cursor: pointer;
 `;
 
+const SkeletonNow = ({ loading, colorMode }) => {
+  return (
+    <LoadArea active={loading}>
+      <PostMyselfContains style={{ marginBottom: "2px" }}>
+        <PostMyselfMain>
+          <Skeleton
+            variant="circular"
+            sx={{ bgcolor: colorMode === "light" ? "" : "#3a3b3c" }}
+            width={40}
+            height={40}
+          />
+          <Skeleton
+            variant="rounded"
+            sx={{ bgcolor: colorMode === "light" ? "" : "#3a3b3c" }}
+            width={590}
+            height={30}
+          />
+        </PostMyselfMain>
+        <PostMyselfUpload>
+          <Skeleton
+            variant="rounded"
+            sx={{ bgcolor: colorMode === "light" ? "" : "#3a3b3c" }}
+            width={250}
+            height={40}
+          />
+          <Skeleton
+            variant="rounded"
+            sx={{ bgcolor: colorMode === "light" ? "" : "#3a3b3c" }}
+            width={250}
+            height={40}
+          />
+        </PostMyselfUpload>
+      </PostMyselfContains>
+      <PostMyselfContains>
+        <PostAuthContain style={{ padding: "0px" }}>
+          <Skeleton
+            style={{ marginRight: "10px" }}
+            sx={{ bgcolor: colorMode === "light" ? "" : "#3a3b3c" }}
+            variant="circular"
+            width={40}
+            height={40}
+          />
+          <PostAuthData>
+            <Skeleton
+              sx={{
+                bgcolor: colorMode === "light" ? "" : "#3a3b3c",
+                fontSize: "1rem",
+              }}
+              variant="text"
+              width={500}
+            />
+            <Skeleton
+              sx={{
+                bgcolor: colorMode === "light" ? "" : "#3a3b3c",
+                fontSize: "1rem",
+              }}
+              variant="text"
+              width={300}
+            />
+          </PostAuthData>
+        </PostAuthContain>
+        <Skeleton
+          style={{ marginTop: "20px" }}
+          sx={{ bgcolor: colorMode === "light" ? "" : "#3a3b3c" }}
+          variant="rounded"
+          width={640}
+          height={40}
+        />
+        <Skeleton
+          style={{ marginTop: "20px" }}
+          sx={{ bgcolor: colorMode === "light" ? "" : "#3a3b3c" }}
+          variant="rounded"
+          width={640}
+          height={300}
+        />
+      </PostMyselfContains>
+    </LoadArea>
+  );
+};
+
 export default function HomePages() {
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   const [value, setValue] = useState("");
   const [imageValue, setImageValue] = useState("");
 
   const [allPost, setAllPost] = useState([]);
 
-  const { user, setUser } = useContext(AuthContext);
+  const { user } = useContext(AuthContext);
 
   const { colorMode } = useContext(ThemeContext);
 
   useEffect(() => {
     allPostApi().then((res) => {
       setAllPost(res.result);
-      // setLoading(false)
+      setLoading(false);
     });
   }, []);
-
-  const navigate = useNavigate();
 
   const Post = ({
     user,
@@ -648,11 +749,14 @@ export default function HomePages() {
               </UpdateArticleAreaCross>
             </UpdateArticleTitle>
             <UpdateArticleInput
-              value={titleValue}
+              rows="10"
               onChange={(e) => {
                 setTitleValue(e.target.value);
               }}
-            />
+            >
+              {titleValue}
+            </UpdateArticleInput>
+
             <img style={{ margin: "15px 0" }} src={imageValue} />
             <PostMyselfUpload style={{ width: "90%", margin: "auto" }}>
               <PostMyselfUploadContains>
@@ -797,10 +901,7 @@ export default function HomePages() {
   return (
     <>
       <Box>
-        <LoadArea active={loading}>
-          <Skeleton variant="rectangular" width={210} height={60} />
-          <Skeleton variant="rounded" width={210} height={60} />
-        </LoadArea>
+        <SkeletonNow loading={loading} colorMode={colorMode} />
         {/* <DynamicContain>
           <DynamicMyself src={work01} />
           <Dynamic src={work01} />

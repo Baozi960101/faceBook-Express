@@ -1,5 +1,9 @@
 import { useState, useContext } from "react";
-import { isRouteErrorResponse, useLocation, useNavigate } from "react-router-dom";
+import {
+  isRouteErrorResponse,
+  useLocation,
+  useNavigate,
+} from "react-router-dom";
 import styled from "styled-components";
 import facebookLogo from "../../image/facebookLogo.svg";
 import search from "../../image/search.svg";
@@ -32,7 +36,7 @@ import moonDark from "../../image/moonDark.svg";
 import logout from "../../image/logout.svg";
 import logoutDark from "../../image/logoutDark.svg";
 import circle from "../../image/circle.svg";
-import { ThemeContext , AuthContext  } from "../../global/context";
+import { ThemeContext, AuthContext } from "../../global/context";
 import {
   MEDIA_QUERY_Header_MB,
   MEDIA_QUERY_Header_Classification,
@@ -45,7 +49,7 @@ import { SetUserToken } from "../../global/utils";
 
 const Box = styled.div`
   display: flex;
-  flex-wrap:wrap;
+  flex-wrap: wrap;
   align-items: center;
   justify-content: space-between;
   width: 100%;
@@ -59,8 +63,8 @@ const Box = styled.div`
   z-index: 1;
 
   ${MEDIA_QUERY} {
-    padding-top:4px;
-    height:auto;
+    padding-top: 4px;
+    height: auto;
   }
 `;
 
@@ -82,13 +86,21 @@ const SearchArea = styled.div`
 `;
 const SearchLogo = styled.div`
   width: 40px;
-  cursor:pointer;
+  cursor: pointer;
+
+  ${MEDIA_QUERY_Header_MB} {
+    margin-right: 10px;
+  }
 `;
 
 const ReturnLogo = styled.img`
   width: 30px;
   height: 30px;
   cursor: pointer;
+
+  ${MEDIA_QUERY} {
+    margin-top: 10px;
+  }
 `;
 
 const SearchSvg = styled.img`
@@ -143,7 +155,13 @@ const RWDMenu = ({ onClick, width, img }) => {
   );
 };
 
-const Search = ({ backHome,searchLogo, returnClick, searchClick, onClick }) => {
+const Search = ({
+  backHome,
+  searchLogo,
+  returnClick,
+  searchClick,
+  onClick,
+}) => {
   return (
     <SearchArea>
       {searchLogo ? (
@@ -172,7 +190,7 @@ const ClassificationArea = styled.div`
   margin-right: 100px;
 
   ${MEDIA_QUERY_Header_MB} {
-    margin:0px;
+    margin: 0px;
   }
 `;
 
@@ -216,16 +234,26 @@ const ClassificationContainsRWD = styled.a`
   display: flex;
   align-items: center;
   justify-content: center;
+`;
 
+const ClassificationContainsRWDHome = styled.div`
+  width: 20%;
+  height: 50px;
+  box-sizing: border-box;
+  border-bottom: ${(props) => (props.action ? "3px solid #3181e6" : "")};
+  box-sizing: box-sizing;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 `;
 
 const ClassificationAreaRWD = styled.div`
-  display:none;
-  width:100%;
-  
+  display: none;
+  width: 100%;
+
   ${MEDIA_QUERY} {
-    display:flex;
-    justify-content:space-between;
+    display: flex;
+    justify-content: space-between;
   }
 `;
 
@@ -244,7 +272,7 @@ const ClassificationRWD = styled.div`
     align-items: center;
     justify-content: center;
   }
-  
+
   ${MEDIA_QUERY} {
     display: none;
   }
@@ -290,7 +318,7 @@ const PersonalInformationArea = styled.div`
     width: 200px;
   }
   ${MEDIA_QUERY} {
-    width: auto
+    width: auto;
   }
 `;
 
@@ -307,7 +335,7 @@ const PersonalInformationList = styled.a`
 
 const HeadContains = styled.img`
   max-height: 100%;
-`
+`;
 
 const PersonalInformationLogo = styled.img`
   width: 20px;
@@ -319,34 +347,41 @@ const PersonalInformationListRWD = styled.div`
   }
 `;
 
-
-
-const PersonalInformation = ({ onclick, colorMode , src}) => {
+const PersonalInformation = ({ onclick, colorMode, src }) => {
   return (
     <PersonalInformationArea>
       <PersonalInformationListRWD>
-        <PersonalInformationList target="_blank" href="https://www.facebook.com/">
+        <PersonalInformationList
+          target="_blank"
+          href="https://www.facebook.com/"
+        >
           <PersonalInformationLogo
             src={colorMode === "light" ? grid : gridDark}
           />
         </PersonalInformationList>
       </PersonalInformationListRWD>
       <PersonalInformationListRWD>
-        <PersonalInformationList target="_blank" href="https://www.messenger.com/">
+        <PersonalInformationList
+          target="_blank"
+          href="https://www.messenger.com/"
+        >
           <PersonalInformationLogo
             src={colorMode === "light" ? message : messageDark}
           />
         </PersonalInformationList>
       </PersonalInformationListRWD>
       <PersonalInformationListRWD>
-        <PersonalInformationList target="_blank" href="https://www.facebook.com/">
+        <PersonalInformationList
+          target="_blank"
+          href="https://www.facebook.com/"
+        >
           <PersonalInformationLogo
             src={colorMode === "light" ? bell : bellDark}
           />
         </PersonalInformationList>
       </PersonalInformationListRWD>
       <PersonalInformationList onClick={onclick}>
-        <HeadContains src={src}/>
+        <HeadContains src={src} />
       </PersonalInformationList>
     </PersonalInformationArea>
   );
@@ -569,9 +604,8 @@ export default function Header() {
   const { pathname } = useLocation();
   const navigate = useNavigate();
 
-
   function toHome() {
-    navigate("/")
+    navigate("/");
   }
 
   function handleChangeMyselfData() {
@@ -579,13 +613,21 @@ export default function Header() {
   }
 
   function logOutClick() {
-    returnClick()
+    returnClick();
     setUser(false);
-    SetUserToken()
+    SetUserToken();
     navigate("/");
   }
 
-  const Classification = ({ toHome,href, clickImg, img, text, width }) => {
+  const Classification = ({
+    toHome,
+    href,
+    clickImg,
+    img,
+    text,
+    width,
+    linkOn,
+  }) => {
     const [classificationClick, setClassificationClick] = useState(false);
 
     function MouseOverClassificationClick() {
@@ -601,7 +643,7 @@ export default function Header() {
         onClick={toHome}
         action={pathname === href}
         href={href}
-        target="_blank"
+        target={linkOn}
         onMouseOver={MouseOverClassificationClick}
         onMouseOut={MouseOutClassificationClick}
       >
@@ -609,6 +651,36 @@ export default function Header() {
           <ClassificationLogo
             style={{ width: width }}
             src={pathname === href ? clickImg : img}
+          />
+        </ClassificationHover>
+        {classificationClick && <Block>{text}</Block>}
+      </ClassificationContains>
+    );
+  };
+
+  const ClassificationHome = ({ toHome, clickImg, text, width, img }) => {
+    const [classificationClick, setClassificationClick] = useState(false);
+
+    function MouseOverClassificationClick() {
+      setClassificationClick(true);
+    }
+
+    function MouseOutClassificationClick() {
+      setClassificationClick(false);
+    }
+
+    return (
+      <ClassificationContains
+        style={{ cursor: "pointer" }}
+        onClick={toHome}
+        action={pathname === "/"}
+        onMouseOver={MouseOverClassificationClick}
+        onMouseOut={MouseOutClassificationClick}
+      >
+        <ClassificationHover>
+          <ClassificationLogo
+            style={{ width: width }}
+            src={pathname === "/" ? clickImg : img}
           />
         </ClassificationHover>
         {classificationClick && <Block>{text}</Block>}
@@ -662,11 +734,11 @@ export default function Header() {
           onClick={handleChangeMenu}
         />
         <ClassificationArea>
-          <Classification
-            href="/"
+          <ClassificationHome
             img={colorMode === "light" ? home : homeDark}
             clickImg={homeClick}
             text="首頁"
+            toHome={toHome}
           />
           <Classification
             href="https://zh-tw.facebook.com/watch/"
@@ -674,6 +746,7 @@ export default function Header() {
             clickImg={watch}
             text="Watch"
             width="35px"
+            linkOn="_blank"
           />
           <Classification
             href="https://zh-tw.facebook.com/"
@@ -681,6 +754,7 @@ export default function Header() {
             clickImg={market}
             text="Marketplace"
             width="35px"
+            linkOn="_blank"
           />
           <Classification
             href="https://zh-tw.facebook.com/"
@@ -688,6 +762,7 @@ export default function Header() {
             clickImg={community}
             text="社群"
             width="35px"
+            linkOn="_blank"
           />
           <Classification
             href="https://www.facebook.com/games/"
@@ -695,6 +770,7 @@ export default function Header() {
             clickImg={puzzle}
             text="遊戲"
             width="30px"
+            linkOn="_blank"
           />
         </ClassificationArea>
         <PersonalInformation
@@ -716,7 +792,7 @@ export default function Header() {
             <SetUpMyself>
               <SetUpMyselfName>
                 <PersonalInformationList style={{ marginRight: "10px" }}>
-                  <HeadContains src={user.img}/>
+                  <HeadContains src={user.img} />
                 </PersonalInformationList>
                 {user.nickName}
               </SetUpMyselfName>
@@ -795,7 +871,7 @@ export default function Header() {
           </OtherSetUp>
         </SetUpMain>
         <ClassificationAreaRWD>
-        <ClassificationRWD
+          <ClassificationRWD
             href="/"
             img={colorMode === "light" ? home : homeDark}
             clickImg={homeClick}
@@ -829,8 +905,8 @@ export default function Header() {
             text="遊戲"
             width="30px"
           />
-        </ClassificationAreaRWD>  
-      </Box>    
+        </ClassificationAreaRWD>
+      </Box>
     </>
   );
 }

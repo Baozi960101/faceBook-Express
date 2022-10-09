@@ -15,14 +15,13 @@ import { hangleColorModeAPI } from "../../global/API";
 import { GetUserToken } from "../../global/utils";
 import { checkLoginAPI } from "../../global/API";
 
-
 const theme = {
   light: {
     placeholderColor: "#65676b",
     headerHoverColor: "#f0f2f5",
     background: "white",
     color: "#1c1e21",
-    homePagesColor:"#656761",
+    homePagesColor: "#656761",
     searchBackground: "#f0f2f5",
     logoImgBackground: "#e4e6eb",
     bodyBackGroundColor: "#f0f2f5",
@@ -30,14 +29,15 @@ const theme = {
     borderBackGround: "#ced0d4",
     scrollbarColor: "#bcc0c4",
     setUpHoverBackGroundColor: "#e4e6eb",
-    articleTitle:"#050505",
+    articleTitle: "#050505",
+    updateArticleBackGround: "rgba(252, 252, 253, 0.5)",
   },
   dark: {
     placeholderColor: "#b0b3b8",
     headerHoverColor: "#3a3b3c",
     background: "#242526",
     color: "#e4e6eb",
-    homePagesColor:"#B0B3B8",
+    homePagesColor: "#B0B3B8",
     searchBackground: "#3a3b3c",
     logoImgBackground: "#3a3b3c",
     bodyBackGroundColor: "#161718",
@@ -45,7 +45,8 @@ const theme = {
     borderBackGround: "#3e4042",
     scrollbarColor: "#5e5e5f",
     setUpHoverBackGroundColor: "#474849",
-    articleTitle:"#E4E6EB",
+    articleTitle: "#E4E6EB",
+    updateArticleBackGround: "rgba(16,16,17,0.8)",
   },
 };
 
@@ -61,7 +62,6 @@ const MainBox = styled.div`
     justify-content: center;
   }
 `;
-
 
 export default function App() {
   const [colorMode, setColorMode] = useState("light");
