@@ -61,7 +61,7 @@ const MainBox = styled.div`
 
 export default function App() {
   const [colorMode, setColorMode] = useState("light");
-  const [user, setUser] = useState(true);
+  const [user, setUser] = useState(false);
   const [searchLogo, setSearchLogo] = useState(true);
   const [menuChange, setMenuChange] = useState(false);
   const [setUpChange, setSetUpChange] = useState(false);
@@ -70,9 +70,9 @@ export default function App() {
     if (!GetUserToken()) {
       return;
     }
-    // checkLoginAPI(GetUserToken()).then((res)=>{
-    //   setUser(res.user)
-    // })
+    checkLoginAPI(GetUserToken()).then((res)=>{
+      setUser(res.user)
+    })
   }, []);
 
   useEffect(() => {
