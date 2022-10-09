@@ -8,16 +8,16 @@ const Comment = db.Comment;
 const secretKey = "thisismynewproject";
 
 const usersController = {
-  getAll:(req,res)=>{
+  getAll: (req, res) => {
     Comment.findAll({
-      include:{
-        model:User,
-        attributes:['nickName',"img"]
+      include: {
+        model: User,
+        attributes: ["nickName", "img"],
       },
-      order: [['createdAt', 'DESC']]
-    }).then((result)=>{
-      return res.json({result})
-    })
+      order: [["createdAt", "DESC"]],
+    }).then((result) => {
+      return res.json({ result });
+    });
   },
   handleRegister: (req, res) => {
     const {
@@ -52,8 +52,8 @@ const usersController = {
         "password",
         "phone",
         "email",
-        "img",
         "colorMode",
+        "img",
       ],
       where: {
         userName: username,
@@ -65,24 +65,21 @@ const usersController = {
             message: "0",
           });
         }
-        const dete = user.dataValues;
+        const deta = user.dataValues;
         const payload = {
-          id: dete.id,
-          nickName: dete.nickName,
-          phone: dete.phone,
-          email: dete.email,
-          // img: dete.img,
-          colorMode: dete.colorMode,
+          id: deta.id,
+          nickName: deta.nickName,
+          colorMode: deta.colorMode,
         };
         const token = jwt.sign(payload, secretKey);
         return res.json({
           user: {
-            id: dete.id,
-            nickName: dete.nickName,
-            phone: dete.phone,
-            email: dete.email,
-            img: dete.img,
-            colorMode: dete.colorMode,
+            id: deta.id,
+            nickName: deta.nickName,
+            phone: deta.phone,
+            email: deta.email,
+            colorMode: deta.colorMode,
+            img: deta.img,
           },
           token,
           message: "1",
@@ -101,22 +98,22 @@ const usersController = {
         "password",
         "phone",
         "email",
-        "img",
         "colorMode",
+        "img",
       ],
       where: {
         id: id,
       },
     }).then((user) => {
-      const dete = user.dataValues;
+      const data = user.dataValues;
       return res.json({
         user: {
-          id: dete.id,
-          nickName: dete.nickName,
-          phone: dete.phone,
-          email: dete.email,
-          img: dete.img,
-          colorMode: dete.colorMode,
+          id: data.id,
+          nickName: data.nickName,
+          phone: data.phone,
+          email: data.email,
+          colorMode: data.colorMode,
+          img: data.img,
         },
         token,
         message: "1",
@@ -137,13 +134,13 @@ const usersController = {
     );
   },
   upDateMyselfData: (req) => {
-    const { id, nickname, phone, email,img } = req.body;
+    const { id, nickname, phone, email, img } = req.body;
     User.update(
       {
         nickname,
         phone,
         email,
-        img
+        img,
       },
       {
         where: {

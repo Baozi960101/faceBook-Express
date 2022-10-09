@@ -74,9 +74,9 @@ export default function App() {
     if (!GetUserToken()) {
       return;
     }
-    // checkLoginAPI(GetUserToken()).then((res)=>{
-    //   setUser(res.user)
-    // })
+    checkLoginAPI(GetUserToken()).then((res)=>{
+      setUser(res.user)
+    })
   }, []);
 
   useEffect(() => {
