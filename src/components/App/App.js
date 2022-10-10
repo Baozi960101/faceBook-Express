@@ -79,7 +79,7 @@ const ChechLoadAera = styled.div`
 
 export default function App() {
   const [colorMode, setColorMode] = useState("light");
-  const [user, setUser] = useState(true);
+  const [user, setUser] = useState(false);
   const [searchLogo, setSearchLogo] = useState(true);
   const [menuChange, setMenuChange] = useState(false);
   const [setUpChange, setSetUpChange] = useState(false);
@@ -93,6 +93,8 @@ export default function App() {
       setColorMode("light")
     }
   },[])
+
+  console.log(GetColorToken());
 
   useEffect(() => {
     if (!GetUserToken()) {

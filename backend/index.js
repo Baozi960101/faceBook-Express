@@ -1,12 +1,13 @@
 const express = require("express");
 const app = express();
 const bodyParser = require("body-parser");
-const port = 5001;
+const port = process.env.PORT || 8080;
 const multer = require("multer");
 const upload = multer();
 
 const usersController = require("./controllers/users");
 const commentController = require("./controllers/comments");
+app.use(express.static('build'))
 
 app.use(
   bodyParser.urlencoded({

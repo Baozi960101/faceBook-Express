@@ -5,6 +5,10 @@ export const SetUserToken = (UserToken) => {
     return localStorage.setItem(token, UserToken);
 };
 
+export const DeleteToken = () => {
+  return localStorage.removeItem(token)
+};
+
 export const GetUserToken = () => {
     return localStorage.getItem(token);
   };

@@ -40,7 +40,7 @@ import {
   MEDIA_QUERY_Header_MIDD,
   MEDIA_QUERY,
 } from "../../global/style";
-import { SetUserToken , SetColorToken } from "../../global/utils";
+import { SetUserToken , SetColorToken,DeleteToken } from "../../global/utils";
 
 const Box = styled.div`
   display: flex;
@@ -570,11 +570,12 @@ export default function Header() {
     navigate("/myself");
   }
 
+
+
   function logOutClick() {
     returnClick();
     setUser(false);
-    SetUserToken(null);
-    SetColorToken(null)
+    DeleteToken()
     navigate("/");
   }
 

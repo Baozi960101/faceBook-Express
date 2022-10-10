@@ -30,11 +30,12 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "start": "react-scripts start",
+    "dev": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "start:be": "nodemon backend/index.js"
+    "start:be": "nodemon backend/index.js",
+    "start": "nodemon backend/index.js"
   },
   "eslintConfig": {
     "extends": [
@@ -54,7 +55,6 @@
       "last 1 safari version"
     ]
   },
-  "proxy": "http://localhost:5001",
   "devDependencies": {
     "nodemon": "^2.0.20",
     "sequelize-cli": "^6.5.1"
