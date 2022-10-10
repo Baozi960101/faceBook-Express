@@ -6,6 +6,8 @@ import {
   MEDIA_QUERY_Header_MB,
   MEDIA_QUERY_SideBar,
   MEDIA_QUERY,
+  MEDIA_QUERY_Load,
+  MEDIA_QUERY_Load_2
 } from "../../global/style";
 import edit from "../../image/edit.svg";
 import editDark from "../../image/editDark.svg";
@@ -64,26 +66,35 @@ const Box = styled.div`
 
 const LoadArea = styled.div`
   background-color: ${({ theme }) => theme.bodyBackGroundColor};
-  width: 680px;
+  width:680px;
   height: 100vh;
   position: fixed;
-  top: 58px;
+  top: 55px;
   z-index: 1;
   display: ${(props) => (props.active ? "flex" : "none")};
   flex-direction: column;
   align-items: center;
-  padding-top: 25px;
+  padding-top: 22px;
+  box-sizing: border-box;
+
+  ${MEDIA_QUERY_Load}{
+    width:660px;
+  }
+
+  ${MEDIA_QUERY_Load_2}{
+    width:630px;
+  }
 
   ${MEDIA_QUERY_Header_SMALL} {
-    margin: 0 40px;
+    margin: 0;
   }
 
   ${MEDIA_QUERY_Header_MB} {
-    max-width: calc(100vw - 650px);
+    width: calc(100vw - 650px);
   }
 
   ${MEDIA_QUERY_SideBar} {
-    max-width: calc(100vw - 350px);
+    width: calc(100vw - 370px);
   }
   ${MEDIA_QUERY_Header_SMALL} {
     width: 0px;
@@ -204,7 +215,6 @@ const PostMyselfContains = styled.div`
 
 const PostMyselfMain = styled.div`
   width: 100%;
-  height: 50%;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -584,48 +594,73 @@ const SkeletonNow = ({ loading, colorMode }) => {
           />
         </PostMyselfUpload>
       </PostMyselfContains>
-      <PostMyselfContains>
-        <PostAuthContain style={{ padding: "0px" }}>
+      <PostMyselfContains style={{ marginBottom: "2px" }}>
+        <PostMyselfMain style={{ border: "0" }}>
           <Skeleton
-            style={{ marginRight: "10px" }}
+            variant="rounded"
             sx={{ bgcolor: colorMode === "light" ? "" : "#3a3b3c" }}
-            variant="circular"
-            width={40}
-            height={40}
+            width={650}
+            height={10}
           />
-          <PostAuthData>
-            <Skeleton
-              sx={{
-                bgcolor: colorMode === "light" ? "" : "#3a3b3c",
-                fontSize: "1rem",
-              }}
-              variant="text"
-              width={500}
-            />
-            <Skeleton
-              sx={{
-                bgcolor: colorMode === "light" ? "" : "#3a3b3c",
-                fontSize: "1rem",
-              }}
-              variant="text"
-              width={300}
-            />
-          </PostAuthData>
-        </PostAuthContain>
-        <Skeleton
-          style={{ marginTop: "20px" }}
-          sx={{ bgcolor: colorMode === "light" ? "" : "#3a3b3c" }}
-          variant="rounded"
-          width={640}
-          height={40}
-        />
-        <Skeleton
-          style={{ marginTop: "20px" }}
-          sx={{ bgcolor: colorMode === "light" ? "" : "#3a3b3c" }}
-          variant="rounded"
-          width={640}
-          height={300}
-        />
+        </PostMyselfMain>
+        <PostMyselfMain style={{ border: "0" }}>
+          <Skeleton
+            variant="rounded"
+            sx={{ bgcolor: colorMode === "light" ? "" : "#3a3b3c" }}
+            width={200}
+            height={8}
+          />
+        </PostMyselfMain>
+        <PostMyselfUpload>
+          <Skeleton
+            variant="rounded"
+            sx={{ bgcolor: colorMode === "light" ? "" : "#3a3b3c" }}
+            width={650}
+            height={30}
+          />
+        </PostMyselfUpload>
+        <PostMyselfMain style={{ border: "0" , marginTop: "20px"}}>
+          <Skeleton
+            variant="rounded"
+            sx={{ bgcolor: colorMode === "light" ? "" : "#3a3b3c" }}
+            width={650}
+            height={220}
+          />
+        </PostMyselfMain>
+      </PostMyselfContains>
+      <PostMyselfContains style={{ marginBottom: "2px" }}>
+        <PostMyselfMain style={{ border: "0" }}>
+          <Skeleton
+            variant="rounded"
+            sx={{ bgcolor: colorMode === "light" ? "" : "#3a3b3c" }}
+            width={650}
+            height={10}
+          />
+        </PostMyselfMain>
+        <PostMyselfMain style={{ border: "0" }}>
+          <Skeleton
+            variant="rounded"
+            sx={{ bgcolor: colorMode === "light" ? "" : "#3a3b3c" }}
+            width={200}
+            height={8}
+          />
+        </PostMyselfMain>
+        <PostMyselfUpload>
+          <Skeleton
+            variant="rounded"
+            sx={{ bgcolor: colorMode === "light" ? "" : "#3a3b3c" }}
+            width={650}
+            height={30}
+          />
+        </PostMyselfUpload>
+        <PostMyselfMain style={{ border: "0" , marginTop: "20px"}}>
+          <Skeleton
+            variant="rounded"
+            sx={{ bgcolor: colorMode === "light" ? "" : "#3a3b3c" }}
+            width={650}
+            height={220}
+          />
+        </PostMyselfMain>
       </PostMyselfContains>
     </LoadArea>
   );
