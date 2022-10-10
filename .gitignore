@@ -5,8 +5,6 @@
 /.pnp
 .pnp.js
 
-# 資料庫設定
-/config
 
 # testing
 /coverage
