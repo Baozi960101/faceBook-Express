@@ -531,7 +531,7 @@ const UpdateArticleCrossBtn = styled.img`
 const UpdateArticleInput = styled.textarea`
   width: 90%;
   font-size: 16px;
-  padding: 0 20px;
+  padding: 10px 20px;
   margin: 20px auto;
   box-sizing: border-box;
   background-color: ${({ theme }) => theme.background};
@@ -751,9 +751,7 @@ export default function HomePages() {
                 setTitleValue(e.target.value);
               }}
               value={titleValue}
-            >
-            </UpdateArticleInput>
-
+            ></UpdateArticleInput>
             <img style={{ margin: "15px 0" }} src={imageValue} />
             <PostMyselfUpload style={{ width: "90%", margin: "auto" }}>
               <PostMyselfUploadContains>

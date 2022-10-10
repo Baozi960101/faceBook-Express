@@ -248,7 +248,6 @@ export default function MyselfPages() {
       setPassErr(true);
       return;
     }
-    console.log(pass, passAgain);
     setPassErr(false);
     upDateMyselfPassAPI(user.id, pass);
     Swal.fire({

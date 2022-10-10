@@ -94,8 +94,6 @@ export default function App() {
     }
   },[])
 
-  console.log(GetColorToken());
-
   useEffect(() => {
     if (!GetUserToken()) {
       setCheckTokenLooin(false);
