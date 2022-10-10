@@ -32,7 +32,7 @@ import { MEDIA_QUERY_Header_MB , MEDIA_QUERY_SideBar } from "../../global/style"
 
 const Area = styled.div`
   padding-top:4px;
-  height:calc(100vh - 64px);
+  height:calc(100vh - 60px);
   overflow-y:auto;
   overflow-y: overlay;
   overflow-x:hidden;
@@ -122,7 +122,7 @@ export default function Sidebar() {
         <BarList src={sidebar_marketplace} text="Marketplace" />
         <BarList src={sidebar_watch} text="Watch" />
         <BarList src={sidebar_review} text="動態回顧" />
-        <BarList src={sidebar_help} text="互助情報站" />
+        <HideBarList active={showMore} src={sidebar_help} text="互助情報站" />
         <HideBarList active={showMore} src={sidebar_healthy} text="心理健康" />
         <HideBarList
           active={showMore}

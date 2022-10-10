@@ -1,6 +1,5 @@
 /* eslint-disable jsx-a11y/alt-text */
 import styled from "styled-components";
-import { useNavigate } from "react-router-dom";
 import { useContext, useEffect, useMemo, useState } from "react";
 import {
   MEDIA_QUERY_Header_SMALL,
@@ -20,7 +19,6 @@ import options from "../../image/options.svg";
 import optionsDark from "../../image/optionsDark.svg";
 import cross from "../../image/cross.svg";
 import crossDark from "../../image/crossDark.svg";
-import work01 from "../../image/work01.png";
 import { ThemeContext, AuthContext } from "../../global/context";
 import {
   postArticleAPI,
@@ -706,7 +704,6 @@ export default function HomePages() {
       reader.addEventListener(
         "load",
         function () {
-          // convert image file to base64 string
           setImageValue(reader.result);
         },
         false
@@ -753,8 +750,8 @@ export default function HomePages() {
               onChange={(e) => {
                 setTitleValue(e.target.value);
               }}
+              value={titleValue}
             >
-              {titleValue}
             </UpdateArticleInput>
 
             <img style={{ margin: "15px 0" }} src={imageValue} />

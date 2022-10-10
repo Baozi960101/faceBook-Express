@@ -1,18 +1,22 @@
-import { Routes, Route, useLocation, useParams } from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
 import styled from "styled-components";
 import Header from "../Header";
 import Sidebar from "../Sidebar";
 import ConnectionBar from "../ConnectionBar";
 import LoginPages from "../../pages/LoginPages";
 import HomePages from "../../pages/HomePages";
-import UpdatePages from "../../pages/UpdatePages";
 import MyselfPages from "../../pages/MyselfPages";
 import { ThemeProvider } from "styled-components";
-import { useEffect, useState } from "react";
+import { useEffect, useState,useLayoutEffect } from "react";
 import { ThemeContext, AuthContext } from "../../global/context";
 import { MEDIA_QUERY_Header_SMALL } from "../../global/style";
 import { hangleColorModeAPI } from "../../global/API";
-import { GetUserToken } from "../../global/utils";
+import {
+  GetUserToken,
+  SetUserToken,
+  GetColorToken,
+  SetColorToken,
+} from "../../global/utils";
 import { checkLoginAPI } from "../../global/API";
 
 const theme = {
@@ -63,6 +67,16 @@ const MainBox = styled.div`
   }
 `;
 
+const ChechLoadAera = styled.div`
+  display: ${(props) => (props.active ? "flex" : "none")};
+  width: 100%;
+  height: 100vh;
+  background-color:${({ theme }) => theme.bodyBackGroundColor};
+  position:fixed;
+  top:0;
+  z-index:5;
+`;
+
 export default function App() {
   const [colorMode, setColorMode] = useState("light");
   const [user, setUser] = useState(true);
@@ -70,32 +84,43 @@ export default function App() {
   const [menuChange, setMenuChange] = useState(false);
   const [setUpChange, setSetUpChange] = useState(false);
 
+  const [checkTokenLooin, setCheckTokenLooin] = useState(true);
+
+  useLayoutEffect(()=>{
+    if (GetColorToken()) {
+      setColorMode(GetColorToken());
+    } else {
+      setColorMode("light")
+    }
+  },[])
+
   useEffect(() => {
     if (!GetUserToken()) {
+      setCheckTokenLooin(false);
       return;
     }
     checkLoginAPI(GetUserToken()).then((res)=>{
       setUser(res.user)
+      setCheckTokenLooin(false)
+    }).catch((err)=>{
+      SetUserToken(null)
+      setCheckTokenLooin(false)
     })
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  useEffect(() => {
-    if (user.colorMode === "dark") {
-      setColorMode("dark");
-    } else {
-      setColorMode("light");
-    }
-  }, [user]);
 
   function handleChangeModeLight(e) {
     e.stopPropagation();
     hangleColorModeAPI(user.id, "light");
+    SetColorToken("light")
     setColorMode("light");
   }
 
   function handleChangeModeDark(e) {
     e.stopPropagation();
     hangleColorModeAPI(user.id, "dark");
+    SetColorToken("dark")
     setColorMode("dark");
   }
 
@@ -128,6 +153,7 @@ export default function App() {
           returnClick,
           searchLogo,
           colorMode,
+          setColorMode,
         }}
       >
         <AuthContext.Provider
@@ -141,6 +167,7 @@ export default function App() {
           }}
         >
           <ThemeProvider theme={theme[colorMode]}>
+            <ChechLoadAera active={checkTokenLooin} />
             <Routes>
               <Route path="/" element={!user && <LoginPages />} />
             </Routes>
@@ -149,9 +176,6 @@ export default function App() {
               {user && <Sidebar />}
               <Routes>
                 <Route path="/" element={user && <HomePages />} />
-              </Routes>
-              <Routes>
-                <Route path="/update/:id" element={user && <UpdatePages />} />
               </Routes>
               <Routes>
                 <Route path="/myself" element={user && <MyselfPages />} />

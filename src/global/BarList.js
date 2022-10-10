@@ -6,7 +6,7 @@ import arrowUpDark from "../image/arrowUpDark.svg";
 
 const BarListContains = styled.a`
   width: 95%;
-  height: 50px;
+  height: 52px;
   padding: 0 8px;
   box-sizing: border-box;
   border-radius: 8px;
@@ -16,7 +16,7 @@ const BarListContains = styled.a`
   font-weight: 600;
   color: ${({ theme }) => theme.color};
   cursor: pointer;
-  text-decoration:none;
+  text-decoration: none;
 
   :hover {
     background-color: ${({ theme }) => theme.headerHoverColor};
@@ -25,6 +25,7 @@ const BarListContains = styled.a`
 
 const HideBarListContains = styled.a`
   width: 95%;
+  height:52px;
   height: ${(props) => (props.active ? "50px" : "0px")};
   padding: 0 8px;
   box-sizing: border-box;
@@ -37,7 +38,7 @@ const HideBarListContains = styled.a`
   cursor: pointer;
   overflow: hidden;
   transition: height 0.2s ease-in-out;
-  text-decoration:none;
+  text-decoration: none;
 
   :hover {
     background-color: ${({ theme }) => theme.headerHoverColor};
@@ -56,10 +57,9 @@ export const BarListPlainText = styled.div`
 `;
 
 const BarListIcon = styled.img`
-  width: 25px;
-  height: 25px;
+  width: 36px;
+  height: 36px;
   margin-right: 12px;
-  margin-left: 5px;
 `;
 
 const PersonalBarListArea = styled.div`
@@ -95,41 +95,54 @@ export const Curve = styled.div`
   border-bottom: 2px solid;
   margin: 8px 0px;
   box-sizing: border-box;
-  border-color:${({ theme }) => theme.borderBackGround};
-
+  border-color: ${({ theme }) => theme.borderBackGround};
 `;
 
 export const BarList = ({ text, src, onClick }) => {
   return (
-    <BarListContains target="_blank" href="https://www.facebook.com/" onClick={onClick}>
+    <BarListContains
+      target="_blank"
+      href="https://www.facebook.com/"
+      onClick={onClick}
+    >
       <BarListIcon src={src} />
       {text}
     </BarListContains>
   );
 };
 
-export const ConnectionPhoneBarList = ({ text, src, onClick,}) => {
+export const ConnectionPhoneBarList = ({ text, src, onClick }) => {
   return (
     <BarListContains onClick={onClick}>
-      <BarListIcon src={src} />
+      <BarListIcon
+        style={{ width: "26px", height: "26px", marginLeft: "5px" }}
+        src={src}
+      />
       {text}
     </BarListContains>
   );
 };
 
-export const ConnectionMailBarList = ({ text, src, onClick,}) => {
+export const ConnectionMailBarList = ({ text, src, onClick }) => {
   return (
-    <BarListContains href={"mailto:"+ text} onClick={onClick}>
-      <BarListIcon src={src} />
+    <BarListContains href={"mailto:" + text} onClick={onClick}>
+      <BarListIcon
+        style={{ width: "26px", height: "26px", marginLeft: "5px" }}
+        src={src}
+      />
       {text}
     </BarListContains>
   );
 };
-
 
 export const HideBarList = ({ active, text, src, onClick }) => {
   return (
-    <HideBarListContains target="_blank" href="https://www.facebook.com/" active={active} onClick={onClick}>
+    <HideBarListContains
+      target="_blank"
+      href="https://www.facebook.com/"
+      active={active}
+      onClick={onClick}
+    >
       <BarListIcon src={src} />
       {text}
     </HideBarListContains>
@@ -138,7 +151,7 @@ export const HideBarList = ({ active, text, src, onClick }) => {
 
 export const PersonalBarList = ({ text, src, onClick }) => {
   return (
-    <BarListContains  onClick={onClick}>
+    <BarListContains onClick={onClick}>
       <PersonalBarListArea>
         <PersonalBarListImg src={src} />
       </PersonalBarListArea>

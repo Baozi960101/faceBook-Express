@@ -3,7 +3,7 @@ const Comment = db.Comment;
 
 const commentController = {
   postArticle: (req) => {
-    const { UserId, content,img } = req.body;
+    const { UserId, content, img } = req.body;
     Comment.create({
       UserId,
       content,
@@ -22,11 +22,11 @@ const commentController = {
     });
   },
   updateArticle: (req, res) => {
-    const { UserId, id, content,img } = req.body;
+    const { UserId, id, content, img } = req.body;
     Comment.update(
       {
         content,
-        img
+        img,
       },
       {
         where: {

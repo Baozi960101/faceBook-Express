@@ -8,9 +8,9 @@ import facebook from "../../image/facebook.svg";
 import cross from "../../image/cross.svg";
 import { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
-import { AuthContext } from "../../global/context";
+import { AuthContext , ThemeContext } from "../../global/context";
 import { createNewUserAPI, loginAPI } from "../../global/API";
-import { SetUserToken } from "../../global/utils";
+import { SetUserToken , SetColorToken } from "../../global/utils";
 
 import Swal from "sweetalert2";
 
@@ -419,6 +419,7 @@ export default function LoginPages() {
 
   const [register, setRegister] = useState(false);
 
+  const { setColorMode } = useContext(ThemeContext);
   const { setUser } = useContext(AuthContext);
 
   const navigate = useNavigate();
@@ -476,9 +477,10 @@ export default function LoginPages() {
         setLoginFail(true);
         return;
       }
-      console.log(res.token);
       setUser(res.user);
       SetUserToken(res.token);
+      setColorMode(res.user.colorMode)
+      SetColorToken(res.user.colorMode)
     });
   }
 

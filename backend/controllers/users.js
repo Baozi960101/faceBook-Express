@@ -4,7 +4,6 @@ const jwt = require("jsonwebtoken");
 const saltRounds = 10;
 const User = db.User;
 const Comment = db.Comment;
-
 const secretKey = "thisismynewproject";
 
 const usersController = {

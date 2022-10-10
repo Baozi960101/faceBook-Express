@@ -1,9 +1,5 @@
 import { useState, useContext } from "react";
-import {
-  isRouteErrorResponse,
-  useLocation,
-  useNavigate,
-} from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import facebookLogo from "../../image/facebookLogo.svg";
 import search from "../../image/search.svg";
@@ -26,7 +22,6 @@ import message from "../../image/message.svg";
 import messageDark from "../../image/messageDark.svg";
 import bell from "../../image/bell.svg";
 import bellDark from "../../image/bellDark.svg";
-import menu from "../../image/menu.svg";
 import arrowRight from "../../image/arrowRight.svg";
 import arrowRightDark from "../../image/arrowRightDark.svg";
 import setting from "../../image/setting.svg";
@@ -45,7 +40,7 @@ import {
   MEDIA_QUERY_Header_MIDD,
   MEDIA_QUERY,
 } from "../../global/style";
-import { SetUserToken } from "../../global/utils";
+import { SetUserToken , SetColorToken } from "../../global/utils";
 
 const Box = styled.div`
   display: flex;
@@ -69,7 +64,7 @@ const Box = styled.div`
 `;
 
 const SearchArea = styled.div`
-  width: 300px;
+  width: 285px;
   height: 100%;
   display: flex;
   justify-content: space-between;
@@ -147,13 +142,6 @@ const SearchImg = styled.img`
   }
 `;
 
-const RWDMenu = ({ onClick, width, img }) => {
-  return (
-    <ClassificationRWD onClick={onClick}>
-      <ClassificationLogo style={{ width: width }} src={img} />
-    </ClassificationRWD>
-  );
-};
 
 const Search = ({
   backHome,
@@ -187,7 +175,7 @@ const Search = ({
 const ClassificationArea = styled.div`
   display: flex;
   height: 100%;
-  margin-right: 100px;
+  margin-right: 85px;
 
   ${MEDIA_QUERY_Header_MB} {
     margin: 0px;
@@ -236,16 +224,6 @@ const ClassificationContainsRWD = styled.a`
   justify-content: center;
 `;
 
-const ClassificationContainsRWDHome = styled.div`
-  width: 20%;
-  height: 50px;
-  box-sizing: border-box;
-  border-bottom: ${(props) => (props.action ? "3px solid #3181e6" : "")};
-  box-sizing: box-sizing;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-`;
 
 const ClassificationAreaRWD = styled.div`
   display: none;
@@ -257,26 +235,6 @@ const ClassificationAreaRWD = styled.div`
   }
 `;
 
-const ClassificationRWD = styled.div`
-  width: 50px;
-  height: 100%;
-  box-sizing: border-box;
-  border-bottom: 2px solid #3181e6;
-  box-sizing: box-sizing;
-  display: none;
-  margin-left: 30px;
-  cursor: pointer;
-
-  ${MEDIA_QUERY_Header_LG} {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-
-  ${MEDIA_QUERY} {
-    display: none;
-  }
-`;
 
 const ClassificationHover = styled.div`
   width: 100%;
@@ -615,7 +573,8 @@ export default function Header() {
   function logOutClick() {
     returnClick();
     setUser(false);
-    SetUserToken();
+    SetUserToken(null);
+    SetColorToken(null)
     navigate("/");
   }
 
