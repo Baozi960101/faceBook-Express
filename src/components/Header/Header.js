@@ -352,11 +352,12 @@ const SetUpMain = styled.div`
   box-shadow: 0 10px 8px 10px rgb(0 0 0 / 10%), 0 6px 5px rgb(0 0 0 / 10%);
   border-radius: 10px;
   background-color: ${({ theme }) => theme.setUpMainBackGroundColor};
-  position: absolute;
+  position:fixed;
   right: 20px;
   top: 50px;
   box-sizing: border-box;
   color: ${({ theme }) => theme.color};
+  z-index:2;
 `;
 
 const OtherSetUp = styled.div`

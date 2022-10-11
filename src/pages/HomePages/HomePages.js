@@ -41,6 +41,8 @@ const Box = styled.div`
   box-sizing: border-box;
   margin: 0 20px;
   padding: 20px 0;
+  
+  z-index:0;
 
   ${MEDIA_QUERY_Header_SMALL} {
     margin: 0 40px;
