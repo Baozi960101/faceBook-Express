@@ -43,9 +43,6 @@
       "react-app/jest"
     ]
   },
-  "engines": {
-    "node": "16.13.2"
-  },
   "browserslist": {
     "production": [
       ">0.2%",
@@ -58,7 +55,6 @@
       "last 1 safari version"
     ]
   },
-  "proxy":"http://localhost:8080",
   "devDependencies": {
     "nodemon": "^2.0.20",
     "sequelize-cli": "^6.5.1"
