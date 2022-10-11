@@ -7,7 +7,7 @@ import {
   MEDIA_QUERY_SideBar,
   MEDIA_QUERY,
   MEDIA_QUERY_Load,
-  MEDIA_QUERY_Load_2
+  MEDIA_QUERY_Load_2,
 } from "../../global/style";
 import edit from "../../image/edit.svg";
 import editDark from "../../image/editDark.svg";
@@ -41,8 +41,8 @@ const Box = styled.div`
   box-sizing: border-box;
   margin: 0 20px;
   padding: 20px 0;
-  
-  z-index:0;
+
+  z-index: 0;
 
   ${MEDIA_QUERY_Header_SMALL} {
     margin: 0 40px;
@@ -68,7 +68,7 @@ const Box = styled.div`
 
 const LoadArea = styled.div`
   background-color: ${({ theme }) => theme.bodyBackGroundColor};
-  width:680px;
+  width: 680px;
   height: 100vh;
   position: fixed;
   top: 55px;
@@ -79,12 +79,12 @@ const LoadArea = styled.div`
   padding-top: 22px;
   box-sizing: border-box;
 
-  ${MEDIA_QUERY_Load}{
-    width:660px;
+  ${MEDIA_QUERY_Load} {
+    width: 660px;
   }
 
-  ${MEDIA_QUERY_Load_2}{
-    width:630px;
+  ${MEDIA_QUERY_Load_2} {
+    width: 630px;
   }
 
   ${MEDIA_QUERY_Header_SMALL} {
@@ -481,7 +481,6 @@ const MoreOptionArea = styled.div`
 `;
 
 const UpdateArticleBackGround = styled.div`
-  overflow: hidden;
   width: 680px;
   height: 100%;
   position: fixed;
@@ -491,6 +490,10 @@ const UpdateArticleBackGround = styled.div`
   justify-content: center;
   background-color: ${({ theme }) => theme.updateArticleBackGround};
   z-index: 2;
+  overflow-y: auto;
+  padding-bottom: 100px;
+  padding-top: 100px;
+  box-sizing: border-box;
 `;
 
 const UpdateArticleArea = styled.div`
@@ -502,7 +505,6 @@ const UpdateArticleArea = styled.div`
   background-color: ${({ theme }) => theme.background};
   box-shadow: 0 10px 10px rgb(0 0 0 / 10%), 0 2px 10px rgb(0 0 0 / 10%);
   border-radius: 10px;
-  position: fixed;
 `;
 
 const UpdateArticleTitle = styled.div`
@@ -621,7 +623,7 @@ const SkeletonNow = ({ loading, colorMode }) => {
             height={30}
           />
         </PostMyselfUpload>
-        <PostMyselfMain style={{ border: "0" , marginTop: "20px"}}>
+        <PostMyselfMain style={{ border: "0", marginTop: "20px" }}>
           <Skeleton
             variant="rounded"
             sx={{ bgcolor: colorMode === "light" ? "" : "#3a3b3c" }}
@@ -655,7 +657,7 @@ const SkeletonNow = ({ loading, colorMode }) => {
             height={30}
           />
         </PostMyselfUpload>
-        <PostMyselfMain style={{ border: "0" , marginTop: "20px"}}>
+        <PostMyselfMain style={{ border: "0", marginTop: "20px" }}>
           <Skeleton
             variant="rounded"
             sx={{ bgcolor: colorMode === "light" ? "" : "#3a3b3c" }}
