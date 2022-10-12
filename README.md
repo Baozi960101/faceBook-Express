@@ -14,6 +14,4 @@
 - [x] 載入延遲UI增加UX體驗
 
 
-![縮圖](https://upload.cc/i1/2022/10/11/JswIhC.jpg)
-
 [1 min影片介紹](https://stream.new/v/01Z3sj9RjoLPeY5Q5WSgGlxRaMzEr01jhY005ZAtJx4nkI)
