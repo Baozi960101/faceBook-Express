@@ -7,7 +7,7 @@ import LoginPages from "../../pages/LoginPages";
 import HomePages from "../../pages/HomePages";
 import MyselfPages from "../../pages/MyselfPages";
 import { ThemeProvider } from "styled-components";
-import { useEffect, useState,useLayoutEffect } from "react";
+import { useEffect, useState, useLayoutEffect } from "react";
 import { ThemeContext, AuthContext } from "../../global/context";
 import { MEDIA_QUERY_Header_SMALL } from "../../global/style";
 import { hangleColorModeAPI } from "../../global/API";
@@ -71,10 +71,10 @@ const ChechLoadAera = styled.div`
   display: ${(props) => (props.active ? "flex" : "none")};
   width: 100%;
   height: 100vh;
-  background-color:${({ theme }) => theme.bodyBackGroundColor};
-  position:fixed;
-  top:0;
-  z-index:5;
+  background-color: ${({ theme }) => theme.bodyBackGroundColor};
+  position: fixed;
+  top: 0;
+  z-index: 5;
 `;
 
 export default function App() {
@@ -86,41 +86,42 @@ export default function App() {
 
   const [checkTokenLooin, setCheckTokenLooin] = useState(true);
 
-  useLayoutEffect(()=>{
+  useLayoutEffect(() => {
     if (GetColorToken()) {
       setColorMode(GetColorToken());
     } else {
-      setColorMode("light")
+      setColorMode("light");
     }
-  },[])
+  }, []);
 
   useEffect(() => {
     if (!GetUserToken()) {
       setCheckTokenLooin(false);
       return;
     }
-    checkLoginAPI(GetUserToken()).then((res)=>{
-      setUser(res.user)
-      setCheckTokenLooin(false)
-    }).catch((err)=>{
-      SetUserToken(null)
-      setCheckTokenLooin(false)
-    })
+    checkLoginAPI(GetUserToken())
+      .then((res) => {
+        setUser(res.user);
+        setCheckTokenLooin(false);
+      })
+      .catch((err) => {
+        SetUserToken(null);
+        setCheckTokenLooin(false);
+      });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
 
   function handleChangeModeLight(e) {
     e.stopPropagation();
     hangleColorModeAPI(user.id, "light");
-    SetColorToken("light")
+    SetColorToken("light");
     setColorMode("light");
   }
 
   function handleChangeModeDark(e) {
     e.stopPropagation();
     hangleColorModeAPI(user.id, "dark");
-    SetColorToken("dark")
+    SetColorToken("dark");
     setColorMode("dark");
   }
 

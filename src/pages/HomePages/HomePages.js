@@ -879,6 +879,11 @@ export default function HomePages() {
 
   function handlePostArticle() {
     if (value === "") {
+      Swal.fire({
+        icon: "error",
+        title: "請輸入內容",
+        confirmButtonColor: "#1877F2",
+      })
       return;
     }
     setValue("");

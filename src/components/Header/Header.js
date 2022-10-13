@@ -144,6 +144,7 @@ const SearchImg = styled.img`
 
 
 const Search = ({
+  colorMode,
   backHome,
   searchLogo,
   returnClick,
@@ -157,7 +158,7 @@ const Search = ({
           <SearchSvg src={facebookLogo} />
         </SearchLogo>
       ) : (
-        <ReturnLogo onClick={returnClick} src={arrowLeft} />
+        <ReturnLogo onClick={returnClick} src={colorMode === "light" ? arrowLeft : arrowLeftDark} />
       )}
       <SearchInputArea>
         {searchLogo && <SearchImg src={search} />}
@@ -688,6 +689,7 @@ export default function Header() {
         }}
       >
         <Search
+          colorMode={colorMode}
           backHome={toHome}
           searchLogo={searchLogo}
           returnClick={returnClick}
